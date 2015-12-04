@@ -1,0 +1,26 @@
+{
+  "name": "flatmate.io",
+  "version": "0.0.1",
+  "description": "tinder for roommates",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/somdeep/flatmate.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/somdeep/flatmate.io/issues"
+  },
+  "homepage": "https://github.com/somdeep/flatmate.io",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "morgan": "^1.6.1",
+    "passport": "^0.3.2"
+  }
+}
