@@ -47,6 +47,10 @@
   margin-bottom: 4px;
 }
 
+.profile .mid{
+  padding-top: 8px;
+}
+
 .profile .mid p{
   margin: 0px;
 }
@@ -98,7 +102,6 @@
 }
 
 .profile .mid button{
-  float: right;
   margin-top: 20px;
   font-size: normal;
 }
@@ -108,11 +111,12 @@
 }
 
 .matches .match{
-  transition: background-color .2s linear, color .2s linear;
+  /*transition: background-color .2s linear, color .2s linear;*/
   margin-bottom: 20px;
+  border: 2px white solid;
 }
 .matches .match:hover{
-  background-color: #43BF57;
+  border-color: #43BF57;
   cursor: pointer;
 }
 
@@ -132,9 +136,9 @@
   color: #43BF57;
   display: inline-block;
 }
-.matches .match:hover h3{
+/*.matches .match:hover h3{
   color: white;
-}
+}*/
 
 .matches .match p.location{
   display: inline-block;
@@ -144,6 +148,6 @@
 .matches .match .contents p{
   margin-bottom: 0px;
 }
-.matches .match:hover p{
+/*.matches .match:hover p{
   color: white;
-}
+}*/
