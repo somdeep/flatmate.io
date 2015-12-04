@@ -1,0 +1,68 @@
+
+button{
+  padding: 10px 20px;
+  font-size: 1.25em;
+  background-color: inherit;
+  border: 2px #43BF57 solid;
+  color: #43BF57;
+  transition: background .2s linear, color .2s linear;
+}
+button:hover, button:focus, button:active{
+  background-color: #43BF57;
+  color: white;
+  outline: none;
+}
+
+button.facebook{
+  border-color: #3b5998;
+  color: #3b5998;
+}
+button.facebook:hover, button.facebook:focus, button.facebook:active{
+  background-color: #3b5998;
+  color: white;
+}
+
+.landing{
+  background-image: url(../img/flat-green.jpg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.landing body{
+  background: inherit;
+  padding-top: 23%;
+}
+
+.landing .login-container{
+  text-align: center;
+  background: white;
+  padding: 30px;
+}
+
+.landing .left{
+  display: inline-block;
+  text-align: left;
+}
+
+.landing .right{
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.landing .left .title{
+  font-size: 4em;
+}
+.landing .left .title span{
+  color: #43BF57;
+}
+
+.landing p{
+  font-size: 2em;
+}
+
+.landing button{
+  width: 100%;
+  margin-bottom: 10px;
+}
