@@ -2,7 +2,7 @@ button{
   padding: 10px 20px;
   font-size: 1.25em;
   background-color: inherit;
-  border: 2px #43BF57 solid;
+  border: 1px #43BF57 solid;
   color: #43BF57;
   transition: background .2s linear, color .2s linear;
 }

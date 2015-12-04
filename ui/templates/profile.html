@@ -1,37 +1,38 @@
-<h2>matt</h2>
 <div class="profile row">
   <div class="col-md-3 left">
+    <h2>matt</h2>
     <img src="img/profile.jpg"></img>
   </div>
   <div class="col-md-6 mid">
+  <form>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">About</h3>
-      </div>
-      <div class="panel-body">
-        <textarea placeholder="Tell us about yourself.."></textarea>
-      </div>
+    <h3>About</h3>
+    <textarea placeholder="Tell us about yourself.."></textarea>
+
+    <h3>Looking For</h3>
+    <textarea placeholder="What are you looking for.."></textarea>
+
+    <div class="row">
+    <div class="col-md-6">
+      <input type="checkbox" id="lf-males" name="lf-males"></input>
+      <label for="lf-males">Male Roomates</label>
+
+      <input type="checkbox" id="lf-females" name="lf-females"></input>
+      <label for="lf-females">Female Roomates</label>
     </div>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Looking For</h3>
-      </div>
-      <div class="panel-body">
-        <textarea placeholder="What are you looking for.."></textarea>
-      </div>
+    <div class="col-md-6">
+      <input type="checkbox" id="lf-student" name="lf-student"></input>
+      <label for="lf-student">Students</label>
+
+      <input type="checkbox" id="lf-professional" name="lf-professional"></input>
+      <label for="lf-professional">Professionals</label>
+    </div>
     </div>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Interests</h3>
-      </div>
-      <div class="panel-body">
-        <textarea placeholder="What are your interests.."></textarea>
-      </div>
-    </div>
+    <button type="submit">Save Changes</button>
 
+  </form>
   </div>
 
 </div>

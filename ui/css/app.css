@@ -43,13 +43,47 @@
   border-radius: 10px;
 }
 .profile .left h2{
-
+  margin-top: 0px;
+  margin-bottom: 4px;
 }
 
 .profile .mid textarea{
   width: 100%;
   border: 0px;
+  resize: none;
+  height:150px;
+  padding: 5px;
+  border: 1px #B1BFB3 solid;
 }
-.profile .mid textarea:focus, .profile .mid textarea:active{
+.profile .mid textarea:focus, .profile .mid textarea:active, .profile .mid textarea:hover{
   outline: 0px;
+  border:1px #43BF57 solid;
+  color: #43BF57;
+}
+
+.profile .mid h3 {
+  margin-top: 0px;
+  font-weight: 200;
+  color: #43BF57;
+}
+
+.profile .mid input[type=checkbox]{
+  margin-right: 10px;
+}
+.profile .mid label{
+  font-weight: normal;
+  width: 85%;
+}
+.profile .mid label:hover{
+  color: #43BF57;
+}
+
+.profile .mid .col-md-6{
+  margin-top:20px;
+}
+
+.profile .mid button{
+  float: right;
+  margin-top: 20px;
+  font-size: normal;
 }
