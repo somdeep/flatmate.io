@@ -32,3 +32,24 @@
   background-color: #2D7F3A;
   text-decoration: none;
 }
+
+.content{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.profile .left img{
+  width: 100%;
+  border-radius: 10px;
+}
+.profile .left h2{
+
+}
+
+.profile .mid textarea{
+  width: 100%;
+  border: 0px;
+}
+.profile .mid textarea:focus, .profile .mid textarea:active{
+  outline: 0px;
+}
