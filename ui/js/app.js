@@ -9,6 +9,9 @@
     $routeProvider.when('/',{
       templateUrl: 'templates/profile.html'
     })
+    .when('/matches',{
+      templateUrl: 'templates/matches.html'
+    })
     .otherwise({redirectTo: '/'});
 
   }]);

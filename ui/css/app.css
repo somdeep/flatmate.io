@@ -47,9 +47,24 @@
   margin-bottom: 4px;
 }
 
+.profile .mid p{
+  margin: 0px;
+}
+
+.profile .mid input[type=text]{
+  padding: 5px;
+  height: 30px;
+  border: 1px #b1bfb3 solid;
+  margin-bottom: 5px;
+}
+.profile .mid input[type=text]:hover, .profile .mid input[type=text]:focus{
+  border:1px #43BF57 solid;
+  color: #43BF57;
+  outline: 0px;
+}
+
 .profile .mid textarea{
   width: 100%;
-  border: 0px;
   resize: none;
   height:150px;
   padding: 5px;
@@ -86,4 +101,49 @@
   float: right;
   margin-top: 20px;
   font-size: normal;
+}
+
+.matches{
+
+}
+
+.matches .match{
+  transition: background-color .2s linear, color .2s linear;
+  margin-bottom: 20px;
+}
+.matches .match:hover{
+  background-color: #43BF57;
+  cursor: pointer;
+}
+
+.matches .match img{
+  width: 30%;
+  vertical-align: top;
+}
+
+.matches .match .contents{
+  display: inline-block;
+  padding-left: 20px;
+  max-width: 65%;
+}
+
+.matches .match .contents h3{
+  margin-top: 0px;
+  color: #43BF57;
+  display: inline-block;
+}
+.matches .match:hover h3{
+  color: white;
+}
+
+.matches .match p.location{
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.matches .match .contents p{
+  margin-bottom: 0px;
+}
+.matches .match:hover p{
+  color: white;
 }
