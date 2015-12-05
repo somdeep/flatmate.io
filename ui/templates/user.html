@@ -6,17 +6,15 @@
   <div class="col-md-6 mid">
 
     <h3>About</h3>
-    <p>City, ST</p>
-    <p>$500 to $1000</p>
-    <p>Forage four dollar toast thundercats, austin mixtape fashion axe blog actually chillwave retro biodiesel bespoke next level narwhal. Everyday carry biodiesel waistcoat typewriter craft beer you probably haven't heard of them organic bushwick godard. Semiotics hashtag drinking vinegar, venmo chartreuse irony occupy kale chips iPhone synth intelligentsia. Pug brunch messenger bag, humblebrag chillwave kale chips cornhole quinoa chambray leggings meh swag echo park paleo YOLO. Craft beer seitan forage, fanny pack occupy food truck celiac migas.</p>
+    <p>{{userCtrl.profile.location}}</p>
+    <p>${{userCtrl.profile.priceLow}} to ${{userCtrl.profile.priceHigh}}</p>
+    <p>{{userCtrl.profile.about}}</p>
 
     <h3>Looking For</h3>
-    <p>Forage four dollar toast thundercats, austin mixtape fashion axe blog actually chillwave retro biodiesel bespoke next level narwhal. Everyday carry biodiesel waistcoat typewriter craft beer you probably haven't heard of them organic bushwick godard. Semiotics hashtag drinking vinegar, venmo chartreuse irony occupy kale chips iPhone synth intelligentsia. Pug brunch messenger bag, humblebrag chillwave kale chips cornhole quinoa chambray leggings meh swag echo park paleo YOLO. Craft beer seitan forage, fanny pack occupy food truck celiac migas.</p>
+    <p>{{userCtrl.profile.lookingFor}}</p>
 
     <ul>
-      <li>Male Roommates</li>
-      <li>Female Roommates</li>
-      <li>Professionals</li>
+      <li ng-repeat="entry in userCtrl.profile.lookingForList">{{entry}}</li>
     </ul>
 
     <button type="button" data-toggle="modal" data-target="#myModal">Message</button>

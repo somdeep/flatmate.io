@@ -17,7 +17,9 @@
       controllerAs: 'matchCtrl'
     })
     .when('/users/:id',{
-      templateUrl: 'templates/user.html'
+      templateUrl: 'templates/user.html',
+      controller: 'UserController',
+      controllerAs: 'userCtrl'
     })
     .otherwise({redirectTo: '/'});
 
@@ -64,7 +66,20 @@
       $location.url('/users/' + id);
     }
 
-  }]);
+  }])
 
+  .controller('UserController', function(){
+
+    this.profile = {
+      username : 'Steven',
+      location : 'Newark, NJ',
+      priceLow : 0,
+      priceHigh : 1800,
+      about : "I'm a professor in the Computer Science department at Columbia University. I joined the faculty here after many years at AT&T  Labs Research in Florham Park, New Jersey. I do research on networks, security and why the two don't get along.",
+      lookingFor : 'You should be able to pay rent',
+      lookingForList : ['Males', 'Females', 'Professionals']
+    };
+
+  });
 
 })();
