@@ -4,6 +4,9 @@ var User = require('./../models/User');
 
 module.exports = function(app) {
 
+
+
+
   app.get('/user', function(req, res){
 
     User.find({},function(err, data){
@@ -14,6 +17,23 @@ module.exports = function(app) {
 
       res.json(data);
     });
+
+  });
+
+
+  app.get('/user/userid', function(req, res){
+    console.log(req.session.passport.user);
+    var user=req.session.passport.user.userid;
+  //  console.log(req.params.userid);
+    //User.find({userid:req.session.}, function (err,data){
+    //
+    //
+    //   if (err){
+    //     return err;
+    //   }
+    //
+    //   res.json(data);
+    // });
 
   });
 

@@ -6,7 +6,13 @@ var express = require('express'),
     session = require('express-session'),
     FacebookStrategy = require('passport-facebook').Strategy
     fs = require('fs');
+    var mongoose    = require('mongoose');
+    var dbUrl       = "mongodb://flatmate:flatmate@ds061974.mongolab.com:61974/flatmate";
+    //var dbUrl = "mongodb://localhost:27017/flatmate1";
 
+    var db          = mongoose.connect(dbUrl);
+
+    var User = require('./app/models/User');
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
 //   serialize users into and deserialize users out of the session.  Typically,
@@ -33,25 +39,43 @@ passport.use(new FacebookStrategy({
     callbackURL: "http://localhost:9000/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, done) {
+    // var dbprofile={""};
     // asynchronous verification, for effect...
+
+    console.log("PRINTING ACCESS TOKEN : " + profile.id);
     process.nextTick(function () {
 
+
+      User.find({userid:profile['id']}, function (err,data){
+
+
+        if (err){
+          return err;
+        }
+        console.log(data.userid);
+
+        var dbprofile = {
+          userid: data.userid
+          //accessToken: accessToken
+        }
+        // dbprofile['userid']=data.userid;
+        // dbprofile['accessToken']=accessToken;
+
+
+        return done(null, dbprofile);
+      });
       // To keep the example simple, the user's Facebook profile is returned to
       // represent the logged-in user.  In a typical application, you would want
       // to associate the Facebook account with a user record in your database,
       // and return that user instead.
-      return done(null, profile);
+
+
+      //return done(null, profile);
     });
   }
 ));
 
-// var mongoose    = require('mongoose');
-// var dbUrl       = "mongodb://flatmate:flatmate@ds061974.mongolab.com:61974/flatmate";
-// //var dbUrl = "mongodb://localhost:27017/flatmate1";
-//
-// var db          = mongoose.connect(dbUrl);
-//
-// var User = require('./app/models/User');
+
 
 
 
@@ -121,6 +145,6 @@ app.listen(port, function(){
 //   the request will proceed.  Otherwise, the user will be redirected to the
 //   login page.
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { console.log(req); return next(); }
+  if (req.isAuthenticated()) { console.log("IS AUTH : " + req); return next(); }
   res.redirect('/')
 }
