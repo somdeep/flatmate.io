@@ -42,7 +42,7 @@ passport.use(new FacebookStrategy({
     // var dbprofile={""};
     // asynchronous verification, for effect...
 
-    // console.log("PRINTING ACCESS TOKEN : " + profile.id);
+     console.log("PRINTING PROFILE: " + JSON.stringify(profile));
     process.nextTick(function () {
 
 
@@ -52,8 +52,34 @@ passport.use(new FacebookStrategy({
         if (err){
           return err;
         }
-        console.log(data.userid);
+        //console.log(data.userid);
+        if(data.length==0)
+        {
 
+          var newdata={
+            username:profile.displayName,
+            userid:profile.id,
+            name:profile.displayName,
+
+
+
+
+          };
+
+          console.log("data empty");
+          console.log("newdata : " +newdata);
+
+          User.create(newdata,function(err, data) {
+            if (err) {
+              return err;
+            }
+
+            //res.json(data);
+
+          });
+
+
+        }
         var dbprofile = {
           userid: profile.id,
           accessToken: accessToken
