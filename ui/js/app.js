@@ -79,7 +79,16 @@
 
   }])
 
-  .controller('MatchesController', ['$location', function($location){
+  .controller('MatchesController', ['$location', '$http', function($location, $http){
+
+    this.matches = [];
+
+    var that = this;
+
+    $http.get('/user/matches')
+    .success(function(data, status, headers, config){
+      that.matches = data;
+    });
 
     this.matchClicked = function(id){
       $location.url('/users/' + id);
