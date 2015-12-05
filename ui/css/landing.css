@@ -41,5 +41,6 @@
 
 .landing button{
   width: 100%;
-  margin-bottom: 10px;
+  position: relative;
+  bottom: 35px;
 }
