@@ -42,6 +42,8 @@ passport.use(new FacebookStrategy({
     // var dbprofile={""};
     // asynchronous verification, for effect...
 
+
+    console.log("ACCESS TOKEN: " + JSON.stringify(accessToken));
      console.log("PRINTING PROFILE: " + JSON.stringify(profile));
     process.nextTick(function () {
 
@@ -130,7 +132,7 @@ app.get('/', function(req, res){
 //   redirecting the user to facebook.com.  After authorization, Facebook will
 //   redirect the user back to this application at /auth/facebook/callback
 app.get('/auth/facebook',
-  passport.authenticate('facebook'),
+  passport.authenticate('facebook',{scope:['user_friends','email','user_photos']}),
   function(req, res){
     // The request will be redirected to Facebook for authentication, so this
     // function will not be called.
