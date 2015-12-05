@@ -25,19 +25,25 @@
 
   }])
 
-  .controller('ProfileController', function(){
+  .controller('ProfileController', ['$http', function($http){
 
     this.lookingForOptions = ['Males', 'Females', 'Students', 'Professionals'];
 
-    this.profile = {
-      username : 'matt',
-      location : 'White Plains, NY',
-      priceLow : 0,
-      priceHigh : 1800,
-      about : 'Looking for a roommate. Don\'t be creepy',
-      lookingFor : 'You should be able to pay rent',
-      lookingForList : ['Males', 'Females', 'Professionals']
-    };
+    this.profile = {}
+    //   username : 'matt',
+    //   location : 'White Plains, NY',
+    //   priceLow : 0,
+    //   priceHigh : 1800,
+    //   about : 'Looking for a roommate. Don\'t be creepy',
+    //   lookingFor : 'You should be able to pay rent',
+    //   lookingForList : ['Males', 'Females', 'Professionals']
+    // };
+
+    $http.get('/user/userid')
+    .success(function(data, status, headers, config){
+      that.profile = data;
+    });
+
 
     var that = this;
 
@@ -58,7 +64,7 @@
     }
 
 
-  })
+  }])
 
   .controller('MatchesController', ['$location', function($location){
 
