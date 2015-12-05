@@ -25,6 +25,7 @@
     "morgan": "^1.6.1",
     "passport": "^0.3.2",
     "passport-facebook": "^2.0.0",
+    "request": "^2.67.0",
     "when": "^3.7.4"
   }
 }
