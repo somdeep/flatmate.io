@@ -121,6 +121,6 @@ app.listen(port, function(){
 //   the request will proceed.  Otherwise, the user will be redirected to the
 //   login page.
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  res.redirect('/login')
+  if (req.isAuthenticated()) { console.log(req); return next(); }
+  res.redirect('/')
 }
