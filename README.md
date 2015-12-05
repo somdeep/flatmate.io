@@ -1,2 +1,7 @@
 # flatmate.io
-Cloud project fro Team J - Roommate Finder
+Cloud project for Team J - Roommate Finder
+
+Somdeep Dey
+Matthew Mallett
+Shangshang Chen
+Tian Zhang
