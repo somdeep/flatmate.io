@@ -74,18 +74,27 @@
 
   }])
 
-  .controller('UserController', function(){
+  .controller('UserController', ['$routeParams', '$http', function($routeParams, $http){
 
-    this.profile = {
-      username : 'Steven',
-      location : 'Newark, NJ',
-      priceLow : 0,
-      priceHigh : 1800,
-      about : "I'm a professor in the Computer Science department at Columbia University. I joined the faculty here after many years at AT&T  Labs Research in Florham Park, New Jersey. I do research on networks, security and why the two don't get along.",
-      lookingFor : 'You should be able to pay rent',
-      lookingForList : ['Males', 'Females', 'Professionals']
-    };
+    this.id = $routeParams.id;
 
-  });
+    this.profile = {}
+    //   username : 'Steven',
+    //   location : 'Newark, NJ',
+    //   priceLow : 0,
+    //   priceHigh : 1800,
+    //   about : "I'm a professor in the Computer Science department at Columbia University. I joined the faculty here after many years at AT&T  Labs Research in Florham Park, New Jersey. I do research on networks, security and why the two don't get along.",
+    //   lookingFor : 'You should be able to pay rent',
+    //   lookingForList : ['Males', 'Females', 'Professionals']
+    // };
+
+    var that = this;
+
+    $http.get('/user/userid/' + that.id)
+    .success(function(data, status, headers, config){
+      that.profile = data[0];
+    });
+
+  }]);
 
 })();
