@@ -1,22 +1,42 @@
 <div class="profile row">
   <div class="col-md-3 left">
-    <h2>matt</h2>
+    <h2>{{profileCtrl.profile.username}}</h2>
     <img src="img/profile.jpg"></img>
   </div>
   <div class="col-md-6 mid">
-  <form>
+  <form name="editProfile" ng-submit="profileCtrl.editProfile()" novalidate>
 
     <h3>About</h3>
     <p>Location</p>
-    <input type="text" placeholder="City, ST"></input>
+    <input type="text" ng-model="profileCtrl.profile.location"
+           placeholder="City, ST" required></input>
     <p>Price Range</p>
-    <input type="text" placeholder="500"></input> to <input type="text" placeholder="1000"></input>
-    <textarea placeholder="Tell us about yourself.."></textarea>
+    <input type="number" ng-model="profileCtrl.profile.priceLow"
+           placeholder="500" required></input>
+    to
+    <input type="number" ng-model="profileCtrl.profile.priceHigh"
+           placeholder="1000" required></input>
+    <textarea ng-model="profileCtrl.profile.about"
+              placeholder="Tell us about yourself.." required></textarea>
 
     <h3>Looking For</h3>
-    <textarea placeholder="What are you looking for.."></textarea>
+    <textarea ng-model="profileCtrl.profile.lookingFor"
+              placeholder="What are you looking for.." required></textarea>
 
-    <div class="row">
+
+    <div ng-repeat="option in profileCtrl.lookingForOptions">
+      <input type="checkbox"
+             id="lf-{{option}}"
+             name="lf"
+             value="{{option}}"
+             ng-checked="profileCtrl.profile.lookingForList.indexOf(option) > -1"
+             ng-click="profileCtrl.toggleSelection(option)">
+       </input>
+      <label for="lf-{{option}}"
+             >{{option}}</label>
+    </div>
+
+    <!-- <div class="row">
     <div class="col-md-6">
       <input type="checkbox" id="lf-males" name="lf-males"></input>
       <label for="lf-males">Male Roomates</label>
@@ -32,7 +52,7 @@
       <input type="checkbox" id="lf-professional" name="lf-professional"></input>
       <label for="lf-professional">Professionals</label>
     </div>
-    </div>
+    </div> -->
 
     <button type="submit">Save Changes</button>
 

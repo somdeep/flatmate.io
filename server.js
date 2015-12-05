@@ -22,7 +22,7 @@ var app = express();
 app.use(bodyParser.json());
 app.use(logger('dev'));
 
-//app.use(express.static(path.join(__dirname, 'ui')));
+app.use(express.static(path.join(__dirname, 'ui')));
 //route file
 require('./app/routes/routes.js')(app);
 
