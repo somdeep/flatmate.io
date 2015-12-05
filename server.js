@@ -42,7 +42,7 @@ passport.use(new FacebookStrategy({
     // var dbprofile={""};
     // asynchronous verification, for effect...
 
-    console.log("PRINTING ACCESS TOKEN : " + profile.id);
+    // console.log("PRINTING ACCESS TOKEN : " + profile.id);
     process.nextTick(function () {
 
 
@@ -55,8 +55,8 @@ passport.use(new FacebookStrategy({
         console.log(data.userid);
 
         var dbprofile = {
-          userid: data.userid
-          //accessToken: accessToken
+          userid: profile.id,
+          accessToken: accessToken
         }
         // dbprofile['userid']=data.userid;
         // dbprofile['accessToken']=accessToken;

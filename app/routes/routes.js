@@ -22,10 +22,13 @@ module.exports = function(app) {
 
 
   app.get('/user/userid', function(req, res){
-    console.log(req.session.passport.user);
-    var user=req.session.passport.user.userid;
-  //  console.log(req.params.userid);
-    //User.find({userid:req.session.}, function (err,data){
+    // console.log(req.session.passport.user);
+    // var user=req.session.passport.user.userid;
+  // //  console.log(req.params.userid);
+  // console.log(req.session.passport.user.userid);
+    var id = req.session.passport.user.userid;
+    console.log(id);
+    // User.find({userid:req.session.passport.user.userid}, function (err,data){
     //
     //
     //   if (err){
@@ -34,6 +37,15 @@ module.exports = function(app) {
     //
     //   res.json(data);
     // });
+    User.find({userid:id}, function (err,data){
+
+
+      if (err){
+        return err;
+      }
+
+      res.json(data);
+    });
 
   });
 

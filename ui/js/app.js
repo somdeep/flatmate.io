@@ -41,7 +41,7 @@
 
     $http.get('/user/userid')
     .success(function(data, status, headers, config){
-      that.profile = data;
+      that.profile = data[0];
     });
 
 
