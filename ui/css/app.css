@@ -156,3 +156,55 @@ input.ng-dirty.ng-invalid, textarea.ng-dirty.ng-invalid{
 /*.matches .match:hover p{
   color: white;
 }*/
+
+.messages .user{
+
+}
+.messages .user:hover{
+  cursor: pointer;
+  border-right: 3px #2D7F3A solid;
+}
+.messages .user.active{
+  border-right: 3px #2D7F3A solid;
+  color: #43BF57;
+}
+.messages .user img{
+  height: 75px;
+}
+.messages .user p{
+  display: inline;
+  margin-left: 20px;
+  font-size: 1.25em;
+}
+
+.messages .message{
+
+}
+.messages .message.mine{
+  text-align: right;
+  color: #43BF57;
+}
+
+.messages textarea{
+  margin-top: 20px;
+  margin-bottom: 5px;
+  height: 80px;
+}
+
+.messages form{
+  text-align: right;
+}
+
+.messages a.profile{
+  padding: 12px 20px;
+  font-size: 1.25em;
+  background-color: inherit;
+  border: 1px #43BF57 solid;
+  color: #43BF57;
+  transition: background .2s linear, color .2s linear;
+}
+.messages a.profile:hover{
+  background-color: #43BF57;
+  color: white;
+  text-decoration: none;
+}

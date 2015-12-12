@@ -1,6 +1,33 @@
-<div class="mailbox">
+<div class="messages">
 
 
+  <div class="row">
+
+    <div class="col-md-4">
+      <div ng-repeat="user in msgCtrl.users"
+           ng-click="msgCtrl.userClick($index)"
+           ng-class="msgCtrl.userClass($index)"
+           class="user">
+        <img ng-src="http://graph.facebook.com/{{user.id}}/picture"></img>
+        <p>{{user.name}}</p>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div ng-repeat="message in msgCtrl.messages | filter:msgCtrl.users[msgCtrl.activeUser].id | orderBy:'time'"
+           ng-class="msgCtrl.messageClass(message)"
+           class="message">
+        {{message.text}}
+      </div>
+      <form name="sendMessage" ng-submit="msgCtrl.sendMessage()" novalidate>
+        <textarea ng-model="msgCtrl.message" placeholder="Send a message" required></textarea>
+        <a href="#/users/{{msgCtrl.users[msgCtrl.activeUser].id}}" class="profile">View Profile</a>
+        <button type="submit">Send</button>
+
+      </form>
+    </div>
+  </div>
+<!--
   <h3> Inbox </h3>
   <div ng-repeat="message in msgCtrl.inbox"
        ng-click="msgCtrl.clicked(message.from)">
@@ -40,5 +67,5 @@
           onclick="location.reload(true)">Send</button>
 
 
-
+ -->
 </div>

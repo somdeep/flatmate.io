@@ -28,17 +28,20 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">New message to [user]</h4>
-      </div>
-      <div class="modal-body">
-        <textarea placeholder="Message.."></textarea>
-      </div>
-      <div class="modal-footer">
-        <button type="button" data-dismiss="modal">Cancel</button>
-        <button type="button">Send</button>
-      </div>
+      <form name="sendMessage" ng-submit="userCtrl.sendMessage()" novalidate>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">New message to {{userCtrl.profile.username}}</h4>
+        </div>
+        <div class="modal-body">
+          <textarea ng-model="userCtrl.message" placeholder="Message.." required>
+          </textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" data-dismiss="modal">Cancel</button>
+          <button type="submit">Send</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

@@ -101,57 +101,105 @@
 
   }])
 
-  .controller('MessagesController', ['$location','$http', function($location, $http){
+  .controller('MessagesController', ['$location','$http', '$scope', function($location, $http, $scope){
     this.inbox = [];
     this.outbox = [];
     this.new = {}; //new message to post to db
+
+    this.messages = [];
+    this.users = [];
+    this.activeUser;
+    this.myId = null;
+
+    this.message = '';
+
+
     var that = this;
     $http.get('/message')
     .success(function(data, status, headers, config){
-      that.inbox = data.in;
-      //sort inbox: latest first
-      that.inbox.sort(function(a,b){
-        var d_a = new Date(a.time);
-        var d_b = new Date(b.time);
-        if (d_a < d_b){
-          return 1;
-        } else if (d_a > d_b) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
-      that.outbox = data.out;
-      //sort outbox: latest first
-      that.outbox.sort(function(a,b){
-        var d_a = new Date(a.time);
-        var d_b = new Date(b.time);
-        if (d_a < d_b){
-          return 1;
-        } else if (d_a > d_b) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
-      that.new.from = data.userid;
+      // that.inbox = data.in;
+      // //sort inbox: latest first
+      // that.inbox.sort(function(a,b){
+      //   var d_a = new Date(a.time);
+      //   var d_b = new Date(b.time);
+      //   if (d_a < d_b){
+      //     return 1;
+      //   } else if (d_a > d_b) {
+      //     return -1;
+      //   } else {
+      //     return 0;
+      //   }
+      // });
+      // that.outbox = data.out;
+      // //sort outbox: latest first
+      // that.outbox.sort(function(a,b){
+      //   var d_a = new Date(a.time);
+      //   var d_b = new Date(b.time);
+      //   if (d_a < d_b){
+      //     return 1;
+      //   } else if (d_a > d_b) {
+      //     return -1;
+      //   } else {
+      //     return 0;
+      //   }
+      // });
+      // that.new.from = data.userid;
+      that.myId = data.userid;
+
+      var userSet = {};
+      for(var i=0; i<data.in.length; i++){
+        that.messages.push(data.in[i]);
+        userSet[data.in[i].from] = data.in[i].from_name;
+      }
+      for(var i=0; i<data.out.length; i++){
+        that.messages.push(data.out[i]);
+        userSet[data.out[i].to] = data.out[i].to_name;
+      }
+      for(var key in userSet){
+        that.users.push({id: key, name: userSet[key]});
+      }
+      that.activeUser = 0;
     });
 
-    //go to that user's profile on click
-    this.clicked = function(userid){
-      console.log(userid);
-      $location.url('/users/' + userid);
+    // //go to that user's profile on click
+    // this.clicked = function(userid){
+    //   console.log(userid);
+    //   $location.url('/users/' + userid);
+    // }
+    //
+    // this.deleteMsg = function(msgid){
+    //   $http.delete('/message/msgid/'+msgid);
+    // }
+    //
+    // this.sendMsg = function(){
+    //   $http.post('/message',that.new);
+    //   console.log(this.new.from);
+    //   console.log(this.new.to);
+    //   console.log(this.new.text);
+    // }
+
+    this.userClick = function(index){
+      that.activeUser = index;
     }
 
-    this.deleteMsg = function(msgid){
-      $http.delete('/message/msgid/'+msgid);
+    this.userClass = function(index){
+      return (index == that.activeUser) ? ['active'] : [];
     }
 
-    this.sendMsg = function(){
-      $http.post('/message',that.new);
-      console.log(this.new.from);
-      console.log(this.new.to);
-      console.log(this.new.text);
+    this.messageClass = function(message){
+      return (message.from === that.myId) ? ['mine'] : [];
+    }
+
+    this.sendMessage = function(){
+      var body = {
+        to : that.users[that.activeUser].id,
+        from : that.myId,
+        text : that.message
+      }
+      $http.post('/message', body);
+      that.messages.push(body);
+      that.message = '';
+      $scope.sendMessage.$setPristine();
     }
 
 
@@ -171,12 +219,26 @@
     //   lookingForList : ['Males', 'Females', 'Professionals']
     // };
 
+    this.message = '';
+
     var that = this;
 
     $http.get('/user/userid/' + that.id)
     .success(function(data, status, headers, config){
       that.profile = data[0];
     });
+
+    that.sendMessage = function(){
+      var body = {
+        text: that.message,
+        to: that.id
+      };
+      $http.post('/message', body)
+      .success(function(data, status, headers, config){
+        $('#myModal').modal('hide');
+      })
+
+    }
 
   }]);
 

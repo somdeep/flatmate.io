@@ -11,6 +11,7 @@ module.exports = function(app) {
   // timestamp will be added here if not present
   app.post('/message', function(req,res){
     var input = req.body;
+    input.from = req.session.passport.user.userid;
 
     //populate missing fields
     if (typeof input.time == 'undefined'){

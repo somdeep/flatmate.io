@@ -1,7 +1,7 @@
 <div class="row matches">
   <div class="col-md-6"
        ng-repeat="match in matchCtrl.matches"
-       ng-click="matchCtrl.matchClicked(i)">
+       ng-click="matchCtrl.matchClicked(match.userid)">
     <div class="match">
       <img ng-src="http://graph.facebook.com/{{match.userid}}/picture?type=large">
       <div class="contents">
