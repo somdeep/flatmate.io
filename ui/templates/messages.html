@@ -5,7 +5,7 @@
        ng-click="msgCtrl.clicked(message.from)">
        <div class="message">
          <img ng-src="http://graph.facebook.com/{{message.from}}/picture?type=small">
-         <p>{{message.from}} -> me </p>
+         <p>{{message.from_name}} -> me </p>
          <p>{{message.time}}</p>
          <p>{{message.text}}</p>
          <hr>
@@ -18,7 +18,7 @@
        ng-click="msgCtrl.clicked(message.to)">
         <div class="message">
           <img ng-src="http://graph.facebook.com/{{message.to}}/picture?type=small">
-          <p> me -> {{message.to}} </p>
+          <p> me -> {{message.to_name}} </p>
           <p>{{message.time}}</p>
           <p>{{message.text}}</p>
           <hr>

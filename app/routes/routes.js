@@ -18,20 +18,25 @@ module.exports = function(app) {
       input['time'] = now;
     }
 
-    // if (typeof input.from_name == 'undefined'){
-    //   User.find({userid:input.from},function(err, data) {
-    //     if (err || data.length == 0) {}
-    //     else {
-    //       console.log(data[0].toJSON().name.toString());
-    //     }
-    //   });
-    // }
 
-    //put message into db
-    Message.create(input,function(err, data) {
-      if (err) { return err; }
-      res.json(data);
+    User.find({userid:input.from},function(err, data) {
+      if (err || data.length == 0) {}
+      else {
+        input['from_name'] = data[0].toJSON().name.toString();
+      }
+      User.find({userid:input.to},function(err, data) {
+        if (err || data.length == 0) {}
+        else {
+          input['to_name'] = data[0].toJSON().name.toString();
+        }
+        // //put message into db
+        Message.create(input,function(err, data) {
+          if (err) { return err; }
+          res.json(data);
+        });
+      });
     });
+    
   });
 
   //not used by frontend, for backend testing
