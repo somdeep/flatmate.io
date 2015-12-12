@@ -16,6 +16,8 @@ module.exports = function(app) {
     if (typeof input.time == 'undefined'){
       var now = new Date().toString();     // can also store Date directly as ISO 8601 date string
       input['time'] = now;
+      // var before = 'Sat Dec 2 2015 00:42:16 GMT-0500 (EST)';
+      // console.log(new Date(before) > new Date(now));
     }
 
 
@@ -29,14 +31,14 @@ module.exports = function(app) {
         else {
           input['to_name'] = data[0].toJSON().name.toString();
         }
-        // //put message into db
+        //put message into db
         Message.create(input,function(err, data) {
           if (err) { return err; }
           res.json(data);
         });
       });
     });
-    
+
   });
 
   //not used by frontend, for backend testing
@@ -61,12 +63,6 @@ module.exports = function(app) {
     var userid = req.session.passport.user.userid;
     Message.find({to:userid},function(err, data1) {
       if (err) { return err; }
-      // data1.sort(function(a,b){
-      //   var d1 = new Date(a.time);
-      //   var d2 = new Date(b.time);
-      //   console.log(d1);
-      //   console.log(d2);
-      // });
       Message.find({from:userid},function(err, data2) {
         if (err) { return err; }
         var data = {'userid': userid,
@@ -75,6 +71,13 @@ module.exports = function(app) {
                    };
         res.json(data);
       });
+    });
+  });
+
+  app.delete('/message/msgid/:msgid', function(req,res){
+    Message.remove({_id:req.params.msgid},function(err,data){
+      if(err) res.send(err);
+      res.json(data);
     });
   });
   //=================done with message routing=====================
