@@ -1,0 +1,38 @@
+<div class="mailbox">
+
+  <h3> Inbox </h3>
+  <div ng-repeat="message in msgCtrl.inbox"
+       ng-click="msgCtrl.clicked(message.from)">
+       <div class="message">
+         <img ng-src="http://graph.facebook.com/{{message.from}}/picture?type=small">
+         <p>{{message.from}} -> me </p>
+         <p>{{message.time}}</p>
+         <p>{{message.text}}</p>
+         <hr>
+       </div>
+  </div>
+
+
+  <h3> Outbox </h3>
+  <div ng-repeat="message in msgCtrl.outbox"
+       ng-click="msgCtrl.clicked(message.to)">
+        <div class="message">
+          <img ng-src="http://graph.facebook.com/{{message.to}}/picture?type=small">
+          <p> me -> {{message.to}} </p>
+          <p>{{message.time}}</p>
+          <p>{{message.text}}</p>
+          <hr>
+        </div>
+  </div>
+
+
+  <h3> New </h3>
+  <input type="text" ng-model="msgCtrl.new.to"
+            placeholder="to..."></input>
+  <textarea ng-model="msgCtrl.new.text"
+            placeholder="message body ..."></textarea>
+  <button ng-click="msgCtrl.sendMsg()">Send</button>
+
+
+
+</div>

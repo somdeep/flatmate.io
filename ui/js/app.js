@@ -16,6 +16,11 @@
       controller: 'MatchesController',
       controllerAs: 'matchCtrl'
     })
+    .when('/messages',{
+      templateUrl: 'templates/messages.html',
+      controller: 'MessagesController',
+      controllerAs: 'msgCtrl'
+    })
     .when('/users/:id',{
       templateUrl: 'templates/user.html',
       controller: 'UserController',
@@ -96,6 +101,34 @@
 
   }])
 
+  .controller('MessagesController', ['$http', function($http){
+    this.inbox = [];
+    this.outbox = [];
+    this.new = {}; //new message to post to db
+    var that = this;
+    $http.get('/message')
+    .success(function(data, status, headers, config){
+      that.inbox = data.in;
+      that.outbox = data.out;
+      that.new.from = data.userid;
+    });
+
+    //need to go to that user's profile
+    //haven't implemented this
+    this.clicked = function(id){
+      console.log(id);
+    }
+
+    this.sendMsg = function(){
+      $http.post('/message',that.new);
+      console.log(this.new.from);
+      console.log(this.new.to);
+      console.log(this.new.text);
+    }
+
+
+  }])
+
   .controller('UserController', ['$routeParams', '$http', function($routeParams, $http){
 
     this.id = $routeParams.id;
@@ -118,5 +151,6 @@
     });
 
   }]);
+
 
 })();

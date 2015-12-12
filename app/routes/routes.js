@@ -1,11 +1,78 @@
 
 var User = require('./../models/User');
+var Message = require('./../models/Message');
 var request=require('request');
 
 module.exports = function(app) {
 
+  //===================message routing========================
 
+  // each message should have at least 3 fields: from, to, text
+  // timestamp will be added here if not present
+  app.post('/message', function(req,res){
+    var input = req.body;
 
+    //populate missing fields
+    if (typeof input.time == 'undefined'){
+      var now = new Date().toString();     // can also store Date directly as ISO 8601 date string
+      input['time'] = now;
+    }
+
+    if (typeof input.from_name == 'undefined'){
+      User.find({userid:input.from},function(err, data) {
+        if (err || data.length == 0) {}
+        else {
+          console.log(data[0].toJSON().name.toString());
+        }
+      });
+    }
+
+    //put message into db
+    Message.create(input,function(err, data) {
+      if (err) { return err; }
+      res.json(data);
+    });
+  });
+
+  //not used by frontend, for backend testing
+  app.get('/message/from/:from', function(req,res){
+    Message.find({from:req.params.from},function(err, data) {
+      if (err) { return err; }
+      res.json(data);
+    });
+  });
+
+  //not used by frontend, for backend testing
+  app.get('/message/to/:to', function(req,res){
+    Message.find({to:req.params.to},function(err, data) {
+      if (err) { return err; }
+      res.json(data);
+    });
+  });
+
+  // get all messages related to this userid
+  // send to frontend with 3 keys: userid, in, out
+  app.get('/message', function(req,res){
+    var userid = req.session.passport.user.userid;
+    Message.find({to:userid},function(err, data1) {
+      if (err) { return err; }
+      data1.sort(function(a,b){
+        var d1 = new Date(a.time);
+        var d2 = new Date(b.time);
+        console.log(d1);
+        console.log(d2);
+      });
+      Message.find({from:userid},function(err, data2) {
+        if (err) { return err; }
+        var data = {'userid': userid,
+                    'in': data1,
+                    'out': data2
+                   };
+        res.json(data);
+      });
+    });
+  });
+  //=================done with message routing=====================
 
   app.get('/user', function(req, res){
 
