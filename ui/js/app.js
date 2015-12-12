@@ -101,7 +101,7 @@
 
   }])
 
-  .controller('MessagesController', ['$http', function($http){
+  .controller('MessagesController', ['$location','$http', function($location, $http){
     this.inbox = [];
     this.outbox = [];
     this.new = {}; //new message to post to db
@@ -109,6 +109,7 @@
     $http.get('/message')
     .success(function(data, status, headers, config){
       that.inbox = data.in;
+      //sort inbox: latest first
       that.inbox.sort(function(a,b){
         var d_a = new Date(a.time);
         var d_b = new Date(b.time);
@@ -121,6 +122,7 @@
         }
       });
       that.outbox = data.out;
+      //sort outbox: latest first
       that.outbox.sort(function(a,b){
         var d_a = new Date(a.time);
         var d_b = new Date(b.time);
@@ -135,10 +137,14 @@
       that.new.from = data.userid;
     });
 
-    //need to go to that user's profile
-    //haven't implemented this
-    this.clicked = function(id){
-      console.log(id);
+    //go to that user's profile on click
+    this.clicked = function(userid){
+      console.log(userid);
+      $location.url('/users/' + userid);
+    }
+
+    this.deleteMsg = function(msgid){
+      $http.delete('/message/msgid/'+msgid);
     }
 
     this.sendMsg = function(){

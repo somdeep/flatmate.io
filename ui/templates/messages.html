@@ -1,13 +1,16 @@
 <div class="mailbox">
 
+
   <h3> Inbox </h3>
   <div ng-repeat="message in msgCtrl.inbox"
        ng-click="msgCtrl.clicked(message.from)">
        <div class="message">
          <img ng-src="http://graph.facebook.com/{{message.from}}/picture?type=small">
-         <p>{{message.from_name}} -> me </p>
+         <p>{{message.from_name}} ({{message.from}}) -> me </p>
          <p>{{message.time}}</p>
          <p>{{message.text}}</p>
+         <button ng-click="msgCtrl.deleteMsg(message._id)"
+                 onclick="location.reload(true)">Delete</button>
          <hr>
        </div>
   </div>
@@ -18,9 +21,11 @@
        ng-click="msgCtrl.clicked(message.to)">
         <div class="message">
           <img ng-src="http://graph.facebook.com/{{message.to}}/picture?type=small">
-          <p> me -> {{message.to_name}} </p>
+          <p> me -> {{message.to_name}} ({{message.to}})</p>
           <p>{{message.time}}</p>
           <p>{{message.text}}</p>
+          <button ng-click="msgCtrl.deleteMsg(message._id)"
+                  onclick="location.reload(true)">Delete</button>
           <hr>
         </div>
   </div>
@@ -31,7 +36,8 @@
             placeholder="receiver's userid"></input>
   <textarea ng-model="msgCtrl.new.text"
             placeholder="message body ..."></textarea>
-  <button ng-click="msgCtrl.sendMsg()">Send</button>
+  <button ng-click="msgCtrl.sendMsg()"
+          onclick="location.reload(true)">Send</button>
 
 
 
