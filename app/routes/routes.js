@@ -18,14 +18,14 @@ module.exports = function(app) {
       input['time'] = now;
     }
 
-    if (typeof input.from_name == 'undefined'){
-      User.find({userid:input.from},function(err, data) {
-        if (err || data.length == 0) {}
-        else {
-          console.log(data[0].toJSON().name.toString());
-        }
-      });
-    }
+    // if (typeof input.from_name == 'undefined'){
+    //   User.find({userid:input.from},function(err, data) {
+    //     if (err || data.length == 0) {}
+    //     else {
+    //       console.log(data[0].toJSON().name.toString());
+    //     }
+    //   });
+    // }
 
     //put message into db
     Message.create(input,function(err, data) {
@@ -56,12 +56,12 @@ module.exports = function(app) {
     var userid = req.session.passport.user.userid;
     Message.find({to:userid},function(err, data1) {
       if (err) { return err; }
-      data1.sort(function(a,b){
-        var d1 = new Date(a.time);
-        var d2 = new Date(b.time);
-        console.log(d1);
-        console.log(d2);
-      });
+      // data1.sort(function(a,b){
+      //   var d1 = new Date(a.time);
+      //   var d2 = new Date(b.time);
+      //   console.log(d1);
+      //   console.log(d2);
+      // });
       Message.find({from:userid},function(err, data2) {
         if (err) { return err; }
         var data = {'userid': userid,
