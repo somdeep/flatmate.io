@@ -5,9 +5,10 @@ var express = require('express'),
     passport = require('passport'),
     session = require('express-session'),
     cookieParser = require('cookie-parser'),
+    request=require('request'),
 
 
-    LinkedInStrategy = require('passport-linkedin').Strategy
+    LinkedInStrategy = require('passport-linkedin-oauth2').Strategy
     fs = require('fs');
     var mongoose    = require('mongoose');
     var dbUrl       = "mongodb://flatmate:flatmate@ds061974.mongolab.com:61974/flatmate";
@@ -37,9 +38,10 @@ var express = require('express'),
 
 //Passport linked in Strategy
     passport.use(new LinkedInStrategy({
-        consumerKey: "77k71lq8q0x5i1",
-        consumerSecret: "soUiwkC5METRPjR4",
-        callbackURL: "http://localhost:9001/auth/linkedin/callback"
+        clientID: "77k71lq8q0x5i1",
+        clientSecret: "soUiwkC5METRPjR4",
+        callbackURL: "http://localhost:9001/auth/linkedin/callback",
+        state: true
       },
       function(token, tokenSecret, profile, done) {
 
@@ -50,7 +52,23 @@ var express = require('express'),
 
          process.nextTick(function () {
 
-           return done(null, profile);
+           var newdata={
+             username:profile.displayName,
+             userid:profile.id,
+             name:profile.displayName,
+             accessToken:token
+
+
+
+           };
+
+
+
+
+
+
+
+           return done(null, newdata);
 
          });
         // User.findOrCreate({ linkedinId: profile.id }, function (err, user) {
@@ -116,6 +134,57 @@ var express = require('express'),
     app.use(ensureAuthenticated);
     require('./app/routes/routes.js')(app);
 
+
+
+    app.get('/linkedin', function(req, res){
+      //res.json(req.session);
+      // var result=[];
+      // var id = req.session.passport.user.userid;
+      //
+      //
+      var accessToken=req.session.passport.user.accessToken;
+       console.log("accessToken : " + accessToken);
+
+
+
+      request('https://api.linkedin.com/v1/people/~:(id,num-connections,educations,industry,positions,picture-url,projects)?oauth2_access_token='+accessToken+"&format=json", function (error, response, body) {
+
+        if(error)
+        res.json(error);
+      if (!error) {
+        //var b=JSON.parse(body);
+        res.json(body);
+        // var data=b.data;
+        // var i;
+        // var pending = data.length;
+        // for(i=0;i<data.length;i++)
+        // {
+        // console.log(data[i].id);
+        // User.find({userid:data[i].id},function(err, data){
+        //
+        //   if (err){
+        //     return err;
+        //   }
+        //     if(data.length!=0)
+        //     {
+        //       result.push(data[0]);
+        //       pending--;
+        //       if(pending == 0){
+        //         res.json(result);
+        //       }
+        //     }
+        //
+        // });
+
+        //} // Show the HTML for the Google homepage.
+      }
+      })
+
+
+
+
+
+    });
 
 
 
