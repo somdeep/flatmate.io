@@ -36,15 +36,17 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new FacebookStrategy({
     clientID: '188629254815291',
     clientSecret: '3c3c7744ede569d79bfa772f725b325c',
-    callbackURL: "http://localhost:9000/auth/facebook/callback"
+    callbackURL: "http://localhost:9000/auth/facebook/callback",
+    profileFields: ['id', 'displayName', 'emails', 'gender', 'birthday', 'locale',
+    'location', 'hometown', 'likes', 'education', 'work', 'bio'],
   },
   function(accessToken, refreshToken, profile, done) {
     // var dbprofile={""};
     // asynchronous verification, for effect...
 
-
+    console.log("testing: " + JSON.stringify(profile));
     console.log("ACCESS TOKEN: " + JSON.stringify(accessToken));
-     console.log("PRINTING PROFILE: " + JSON.stringify(profile));
+    console.log("PRINTING PROFILE: " + JSON.stringify(profile));
     process.nextTick(function () {
 
 
@@ -54,7 +56,7 @@ passport.use(new FacebookStrategy({
         if (err){
           return err;
         }
-        //console.log(data.userid);
+        console.log(profile);
         if(data.length==0)
         {
 
@@ -62,9 +64,16 @@ passport.use(new FacebookStrategy({
             username:profile.displayName,
             userid:profile.id,
             name:profile.displayName,
-
-
-
+            email:profile.emails[0].value,
+            gender:profile.gender,
+            birthday:profile._json.birthday,
+            locale:profile._json.locale,
+            currentCity:profile._json.location.name,
+            hometown:profile._json.hometown.name,
+            likes:profile._json.likes,
+            education:profile._json.education,
+            work:profile._json.work,
+            about_me:profile._json.bio,
 
           };
 
@@ -132,7 +141,9 @@ app.get('/', function(req, res){
 //   redirecting the user to facebook.com.  After authorization, Facebook will
 //   redirect the user back to this application at /auth/facebook/callback
 app.get('/auth/facebook',
-  passport.authenticate('facebook',{scope:['user_friends','email','user_photos']}),
+  passport.authenticate('facebook',
+  {scope:['user_friends','email','user_photos','user_location','user_likes','user_birthday',
+  'user_education_history','user_work_history','user_about_me','user_hometown']}),
   function(req, res){
     // The request will be redirected to Facebook for authentication, so this
     // function will not be called.
