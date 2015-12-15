@@ -107,34 +107,60 @@ module.exports = function(app) {
 
 
 
-    request('https://graph.facebook.com/'+id+'/friends?access_token='+accessToken, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      var b=JSON.parse(body);
-      var data=b.data;
-      var i;
-      var pending = data.length;
-      for(i=0;i<data.length;i++)
-      {
-      console.log(data[i].id);
-      User.find({userid:data[i].id},function(err, data){
 
-        if (err){
-          return err;
-        }
-          if(data.length!=0)
-          {
-            result.push(data[0]);
-            pending--;
-            if(pending == 0){
-              res.json(result);
-            }
-          }
 
+      User.findOne({userid:id},function(error,dat){
+      //var prof=JSON.stringify(dat[0].friends);
+      var str= JSON.parse(JSON.stringify(dat), function(k, v) {
+        //console.log(v); // log the current property name, the last is "".
+        return v;       // return the unchanged property value.
       });
 
-      } // Show the HTML for the Google homepage.
+      var friend=(str["friends"]);
+      var list=JSON.stringify(friend.data);
+      var data=JSON.parse(list);
+      var pending=0;
+
+
+      for(key in data)
+      {
+    console.log("MATCHED FRIENDS : " + JSON.stringify(data[key].id));
+
+      pending++;
+      }
+      console.log("COUNT : " + pending);
+
+
+      //  var i;
+
+
+    for(i=0;i<pending;i++)
+       {
+       console.log((data[i].id));
+
+      User.find({userid:data[i].id},function(err, data){
+
+          if (err){
+            return err;
+          }
+            if(data.length!=0)
+            {
+              //console.log("QUERY RESULT match : " + data);
+              result.push(data[0]);
+              pending--;
+              if(pending == 0){
+
+
+
+
+                res.json(result);
+              }
+            }
+
+        });
     }
-    })
+    }); // Show the HTML for the Google homepage.
+
 
 
 

@@ -38,7 +38,7 @@ passport.use(new FacebookStrategy({
     clientSecret: '3c3c7744ede569d79bfa772f725b325c',
     callbackURL: "http://localhost:9000/auth/facebook/callback",
     profileFields: ['id', 'displayName', 'emails', 'gender', 'birthday', 'locale',
-    'location', 'hometown', 'likes', 'education', 'work', 'bio'],
+    'location', 'hometown', 'likes', 'education', 'work', 'bio','friends'],
   },
   function(accessToken, refreshToken, profile, done) {
     // var dbprofile={""};
@@ -46,7 +46,8 @@ passport.use(new FacebookStrategy({
 
     console.log("testing: " + JSON.stringify(profile));
     console.log("ACCESS TOKEN: " + JSON.stringify(accessToken));
-    console.log("PRINTING PROFILE: " + JSON.stringify(profile));
+    //console.log("PRINTING PROFILE: " + JSON.stringify(profile));
+      console.log("PRINTING FRIENDS" + JSON.stringify(profile._json.friends));
     process.nextTick(function () {
 
 
@@ -56,7 +57,7 @@ passport.use(new FacebookStrategy({
         if (err){
           return err;
         }
-        console.log(profile);
+
         if(data.length==0)
         {
 
@@ -74,11 +75,11 @@ passport.use(new FacebookStrategy({
             education:profile._json.education,
             work:profile._json.work,
             about_me:profile._json.bio,
-
+            friends : profile._json.friends
           };
 
-          console.log("data empty");
-          console.log("newdata : " +newdata);
+        //  console.log("data empty");
+      //    console.log("newdata : " +newdata);
 
           User.create(newdata,function(err, data) {
             if (err) {
