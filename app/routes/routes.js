@@ -105,10 +105,17 @@ module.exports = function(app) {
     var accessToken=req.session.passport.user.accessToken;
     console.log("accessToken : " + accessToken);
 
+    // my profile data from database, ready to be compared to my friends' information
+    var myData = [];
+    User.find({userid:id},function(err, myData){
 
+      if (err){
+        return err;
+      }
 
+      // console.log(myData);
 
-
+      // search for my friends list
       User.findOne({userid:id},function(error,dat){
       //var prof=JSON.stringify(dat[0].friends);
       var str= JSON.parse(JSON.stringify(dat), function(k, v) {
@@ -124,7 +131,7 @@ module.exports = function(app) {
 
       for(key in data)
       {
-    console.log("MATCHED FRIENDS : " + JSON.stringify(data[key].id));
+      console.log("MATCHED FRIENDS : " + JSON.stringify(data[key].id));
 
       pending++;
       }
@@ -133,10 +140,10 @@ module.exports = function(app) {
 
       //  var i;
 
-
-    for(i=0;i<pending;i++)
-       {
-       console.log((data[i].id));
+      // for each of my friend
+      for(i=0;i<pending;i++)
+      {
+      console.log((data[i].id));
 
       User.find({userid:data[i].id},function(err, data){
 
@@ -145,21 +152,148 @@ module.exports = function(app) {
           }
             if(data.length!=0)
             {
+
+// =================Begin of self-defined matching algorithm==================
+              // score of matching
+              var score = 0;
+
+              // 1. price: if two people have overlap in price range
+              if(myData[0].toJSON().priceLow != null
+                && myData[0].toJSON().priceHigh != null
+                && data[0].toJSON().priceLow != null
+                && data[0].toJSON().priceHigh != null)
+              {
+                if(myData[0].toJSON().priceLow < data[0].toJSON().priceHigh &&
+                   myData[0].toJSON().priceHigh > data[0].toJSON().priceLow)
+                {
+                  score += 50;
+                }
+              }
+
+              // 2. currentCity
+              if(myData[0].toJSON().currentCity != null
+                && data[0].toJSON().currentCity != null)
+              {
+                var myWords = [];
+                myWords = myData[0].toJSON().currentCity
+                          .toLowerCase()
+                          .split(",");
+                var friendWords = [];
+                friendWords = data[0].toJSON().currentCity
+                          .toLowerCase()
+                          .split(",");
+                // if they live in the same current city
+                if (myWords[0] == friendWords[0]) {
+                  score += 10;
+                }
+              }
+
+              // 3. hometown
+              if(myData[0].toJSON().hometown != null
+                && data[0].toJSON().hometown != null)
+              {
+                myWords = [];
+                myWords = myData[0].toJSON().hometown
+                          .toLowerCase()
+                          .split(",");
+                friendWords = [];
+                friendWords = data[0].toJSON().hometown
+                          .toLowerCase()
+                          .split(",");
+                // if they live in the same current city
+                if (myWords[0] == friendWords[0]) {
+                  score += 10;
+                }
+              }
+
+              // 4. birthday
+              if(myData[0].toJSON().birthday != null
+                && data[0].toJSON().birthday != null)
+              {
+                var myBirthDate = [];
+                myBirthDate = myData[0].toJSON().birthday
+                          .toLowerCase()
+                          .split("/");
+                var birthDate = [];
+                birthDate = data[0].toJSON().birthday
+                          .toLowerCase()
+                          .split("/");
+                // if their  age difference is less than 5 years old
+                if (Math.abs(myBirthDate[2] - birthDate[2]) <= 5) {
+                  score += 10;
+                }
+              }
+
+              // 5. education
+              if(myData[0].toJSON().education != null
+                && data[0].toJSON().education != null)
+              {
+                // if they are ever in the same school
+                for (i = 0; i < myData[0].toJSON().education.length; i++) {
+                  for (j = 0; j < data[0].toJSON().education.length; j++) {
+                    if (myData[0].toJSON().education[i].school.id == data[0].toJSON().education[j].school.id) {
+                      score += 10;
+                    }
+                  }
+                }
+
+              }
+
+              // 6. work
+              if(myData[0].toJSON().work != null
+                && data[0].toJSON().work != null)
+              {
+                // if they are ever in the same company
+                for (i = 0; i < myData[0].toJSON().work.length; i++) {
+                  for (j = 0; j < data[0].toJSON().work.length; j++) {
+                    if (myData[0].toJSON().work[i].employer.id == data[0].toJSON().work[j].employer.id) {
+                      score += 10;
+                    }
+                  }
+                }
+
+              }
+
+              // 7. likes
+              if(myData[0].toJSON().likes != null
+                && data[0].toJSON().likes != null)
+              {
+                // if they have the same like
+                for (i = 0; i < myData[0].toJSON().likes.data.length; i++) {
+                  for (j = 0; j < data[0].toJSON().likes.data.length; j++) {
+                    if (myData[0].toJSON().likes.data[i].id == data[0].toJSON().likes.data[j].id) {
+                      score += 10;
+                    }
+                  }
+                }
+
+              }
+
+// =================End of self-defined matching algorithm==================
+
+              data[0].set('score', score);
               //console.log("QUERY RESULT match : " + data);
               result.push(data[0]);
               pending--;
               if(pending == 0){
-
-
-
-
+                console.log("outprint!!!");
+                console.log(result);
+                console.log("end!!!");
                 res.json(result);
               }
             }
 
         });
-    }
-    }); // Show the HTML for the Google homepage.
+      }
+      }); // Show the HTML for the Google homepage.
+
+
+
+
+
+    });
+    //console.log(myData);
+
 
 
 
