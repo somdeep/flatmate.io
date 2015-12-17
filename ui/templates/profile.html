@@ -4,9 +4,13 @@
     <img ng-src="http://graph.facebook.com/{{profileCtrl.profile.userid}}/picture?type=large"></img>
   </div>
   <div class="col-md-6 mid">
+
+    <h3>About</h3><form method="get" action="/connect/linkedin">
+    <button type="submit" class="btn btn-linkedin">Login with LinkedIn</button>
+    </form>
   <form name="editProfile" ng-submit="profileCtrl.editProfile()" novalidate>
 
-    <h3>About</h3>
+
     <p>Location</p>
     <input type="text" ng-model="profileCtrl.profile.location"
            placeholder="City, ST" required></input>

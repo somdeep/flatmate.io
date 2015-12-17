@@ -4,7 +4,9 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     passport = require('passport'),
     session = require('express-session'),
-    FacebookStrategy = require('passport-facebook').Strategy
+    FacebookStrategy = require('passport-facebook').Strategy,
+    LinkedInStrategy = require('passport-linkedin-oauth2').Strategy
+
     fs = require('fs');
     var mongoose    = require('mongoose');
     var dbUrl       = "mongodb://flatmate:flatmate@ds061974.mongolab.com:61974/flatmate";
@@ -113,6 +115,47 @@ passport.use(new FacebookStrategy({
   }
 ));
 
+//Passport linked in Strategy
+    passport.use(new LinkedInStrategy({
+        clientID: "77k71lq8q0x5i1",
+        clientSecret: "soUiwkC5METRPjR4",
+        callbackURL: "http://localhost:9000/connect/linkedin/callback",
+        state: true
+      },
+      function(token, tokenSecret, profile, done) {
+
+
+        console.log("ACCESS TOKEN: " + JSON.stringify(token));
+         console.log("PRINTING PROFILE: " + JSON.stringify(profile.displayName));
+
+
+        //  process.nextTick(function () {
+         //
+        //    var newdata={
+        //      username:profile.displayName,
+        //      userid:profile.id,
+        //      name:profile.displayName,
+        //      accessToken:token
+         //
+         //
+         //
+        //    };
+         //
+         //
+         //
+         //
+         //
+         //
+         //
+        //    return done(null, newdata);
+         //
+        //  });
+        // User.findOrCreate({ linkedinId: profile.id }, function (err, user) {
+        //   return done(err, user);
+        // });
+        return done(null,profile);
+      }
+    ));
 
 
 
@@ -160,6 +203,32 @@ app.get('/auth/facebook/callback',
   function(req, res) {
     res.redirect('/');
   });
+
+
+
+  app.get('/connect/linkedin',
+    passport.authorize('linkedin', { failureRedirect: '/' })
+  );
+
+
+  app.get('/connect/linkedin/callback',
+  passport.authorize('linkedin', { failureRedirect: '/' }),
+  function(req, res) {
+    var user = req.user;
+    var account = req.account;
+
+      console.log("LINKED IN : " + JSON.stringify(req.account));
+      console.log("Facebook : " + JSON.stringify(req.user));
+        res.redirect('/');
+    // Associate the Twitter account with the logged-in user.
+    // account.userId = user.id;
+    // account.save(function(err) {
+    //   if (err) { return self.error(err); }
+    //   self.redirect('/profile');
+    // });
+  }
+);
+
 
 //route file
 app.use(express.static(path.join(__dirname, 'ui')));
