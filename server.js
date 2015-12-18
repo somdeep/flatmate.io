@@ -128,7 +128,9 @@ passport.use(new FacebookStrategy({
         console.log("ACCESS TOKEN: " + JSON.stringify(token));
          console.log("PRINTING PROFILE: " + JSON.stringify(profile.displayName));
 
-
+          //var id = req.session.passport.user.userid;
+        
+     //   console.log(id);
         //  process.nextTick(function () {
          //
         //    var newdata={
@@ -217,9 +219,23 @@ app.get('/auth/facebook/callback',
     var user = req.user;
     var account = req.account;
 
-      console.log("LINKED IN : " + JSON.stringify(req.account));
-      console.log("Facebook : " + JSON.stringify(req.user));
-        res.redirect('/');
+      
+//      console.log("LINKED IN : " + JSON.stringify(req.account));
+       var id = req.session.passport.user.userid;
+      var updatedData = {linkedin : req.account};
+      console.log("LINKED IN : " + JSON.stringify(updatedData));
+      
+      
+     User.update({userid:id},{$set : updatedData}, function (err,updated){
+      if (err)
+        res.send(err);
+
+//        res.json(updated);
+         res.redirect('/');
+      });
+      
+//      console.log("Facebook : " + JSON.stringify(req.user));
+//        
     // Associate the Twitter account with the logged-in user.
     // account.userId = user.id;
     // account.save(function(err) {
