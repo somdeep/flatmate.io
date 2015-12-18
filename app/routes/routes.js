@@ -1,6 +1,8 @@
 
 var User = require('./../models/User');
 var Message = require('./../models/Message');
+var craigslist = require('./craigslist');
+var request = require('request');
 var request=require('request');
 
 module.exports = function(app) {
@@ -82,6 +84,14 @@ module.exports = function(app) {
     });
   });
   //=================done with message routing=====================
+
+  //for testing
+  app.get('/craigslist', function(req,res){
+    craigslist('new york',300,600,function(err,rooms){
+      if (err) res.send(err);
+      res.json(rooms);
+    });
+  });
 
   app.get('/user', function(req, res){
 
@@ -341,7 +351,63 @@ module.exports = function(app) {
         return err;
       }
 
-      res.json(data);
+      //============add craigslist rooms===================
+      var myid = req.session.passport.user.userid;
+      User.find({userid: myid}, function (err,mydata){
+        var myLow = mydata[0].toJSON().priceLow;
+        var herLow = data[0].toJSON().priceLow;
+        var myHigh = mydata[0].toJSON().priceHigh;
+        var herHigh = data[0].toJSON().priceHigh;
+        var myCity = mydata[0].toJSON().location;
+        var herCity = data[0].toJSON().location;
+
+        if (typeof myLow == 'undefined') {myLow = 0;}
+        if (typeof herLow == 'undefined') {herLow = 0;}
+        if (typeof myHigh == 'undefined') {myHigh = 10000;}
+        if (typeof herHigh == 'undefined') {herHigh = 10000;}
+        var min = Math.max(myLow,herLow);
+        var max = Math.min(myHigh,herHigh);
+        var city = {};
+        if (typeof myCity == 'undefined' && typeof herCity == 'undefined'){
+          city = '';
+        }
+        else if (typeof myCity == 'undefined' && typeof herCity != 'undefined'){
+          city = herCity;
+        }
+        else if (typeof myCity != 'undefined' && typeof herCity == 'undefined'){
+          city = myCity;
+        }
+        else if (myCity.toLowerCase() != (herCity).toLowerCase()){
+          city = '';
+        }
+        else {
+          city = myCity;
+        }
+
+        // console.log('================');
+        // console.log(min);
+        // console.log(max);
+        // console.log(city);
+        // console.log('================');
+        if (min>max) {
+          res.json(data);
+        }
+        else {
+          craigslist(city,min,max,function(err,rooms){
+            if (err) {
+              res.json(data);
+            }
+            else {
+              data[0].set('rooms',rooms);
+              res.json(data);
+            }
+          });
+        }
+      });
+      //============end of craigslist rooms===================
+
+
+      //res.json(data);
     });
 
   });

@@ -21,6 +21,17 @@
 
   </div>
 
+  <div class="col-md-3 right"
+       style="overflow:scroll;">
+       <h3>Recommended for you and {{userCtrl.profile.name}}</h3>
+       <div ng-repeat="room in userCtrl.profile.rooms">
+            <img ng-src={{room.picLink}}></img>
+            <p>{{room.description}}</p>
+            <a href={{room.link}}>link</a>
+            <hr>
+       </div>
+  </div>
+
 </div>
 
 
