@@ -120,7 +120,7 @@ module.exports = function(app) {
     var myData = [];
     // all user's profile data from database
     var data = [];
-    var school = [];
+
     User.find({userid:id},function(err, myData){
 
       if (err){
