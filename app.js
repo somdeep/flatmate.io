@@ -25,10 +25,14 @@ passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
 
+var cbUrl = (process.env.PORT) ?
+    'https://flatmateio.mybluemix.net/auth/facebook/callback',
+    "http://localhost:9000/auth/facebook/callback"
+
 passport.use(new FacebookStrategy({
-    clientID: '188629254815291',
-    clientSecret: '3c3c7744ede569d79bfa772f725b325c',
-    callbackURL: "http://localhost:9000/auth/facebook/callback",
+    clientID: '1072403569458016',
+    clientSecret: 'a622f10ac5fb5d8f1ff5a33a78d51487',
+    callbackURL: cbUrl,
     profileFields: ['id', 'displayName', 'emails', 'gender', 'birthday', 'locale',
     'location', 'hometown', 'likes', 'education', 'work', 'bio','friends'],
   },
