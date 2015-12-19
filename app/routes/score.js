@@ -4,6 +4,8 @@ var getScore = function(data, myData){
   //=================Begin of self-defined matching algorithm==================
   // score of matching
   var score = 0;
+  // info
+  var info = "flatmate.io user";
 
   // 1. price: if two people have overlap in price range
   if(myData[0].toJSON().priceLow != null
@@ -142,6 +144,7 @@ var getScore = function(data, myData){
     for (i = 0; i < myData[0].toJSON().friends.data.length; i++) {
       if (myData[0].toJSON().friends.data[i].id == data.toJSON().userid) {
         score += 100;
+        info = "You are Facebook friends!"
       }
     }
   }
@@ -202,7 +205,10 @@ var getScore = function(data, myData){
   // console.log('==========================');
   // console.log(score);
   // console.log('==========================');
-  return score;
+  var callBackString = [];
+  callBackString.value1 = score;
+  callBackString.value2 = info;
+  return callBackString;
   // =================End of self-defined matching algorithm==================
 
 
