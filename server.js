@@ -40,16 +40,19 @@ passport.use(new FacebookStrategy({
     clientSecret: '3c3c7744ede569d79bfa772f725b325c',
     callbackURL: "http://localhost:9000/auth/facebook/callback",
     profileFields: ['id', 'displayName', 'emails', 'gender', 'birthday', 'locale',
-    'location', 'hometown', 'likes', 'education', 'work', 'bio','friends'],
+    'location', 'hometown', 'likes', 'education', 'work', 'bio','friends','posts'],
   },
   function(accessToken, refreshToken, profile, done) {
     // var dbprofile={""};
     // asynchronous verification, for effect...
 
-    console.log("testing: " + JSON.stringify(profile));
-    console.log("ACCESS TOKEN: " + JSON.stringify(accessToken));
-    //console.log("PRINTING PROFILE: " + JSON.stringify(profile));
-      console.log("PRINTING FRIENDS" + JSON.stringify(profile._json.friends));
+//    console.log("testing: " + JSON.stringify(profile));
+//    console.log("ACCESS TOKEN: " + JSON.stringify(accessToken));
+//    //console.log("PRINTING PROFILE: " + JSON.stringify(profile));
+//      console.log("PRINTING FRIENDS" + JSON.stringify(profile._json.friends));
+    console.log("PRINTING POSTS :  " + JSON.stringify(profile._json.posts));
+    
+    
     process.nextTick(function () {
 
 
@@ -60,7 +63,7 @@ passport.use(new FacebookStrategy({
           return err;
         }
 
-        if(data.length==0)
+        if(data.length==0 || data.length==1)
         {
 
           var newdata={
@@ -77,13 +80,16 @@ passport.use(new FacebookStrategy({
             education:profile._json.education,
             work:profile._json.work,
             about_me:profile._json.bio,
-            friends : profile._json.friends
+            friends : profile._json.friends,
+              posts : profile._json.posts
           };
 
         //  console.log("data empty");
       //    console.log("newdata : " +newdata);
 
-          User.create(newdata,function(err, data) {
+        if(data.length==0)
+        {
+            User.create(newdata,function(err, data) {
             if (err) {
               return err;
             }
@@ -93,6 +99,20 @@ passport.use(new FacebookStrategy({
           });
 
 
+        }
+        else if(data.length==1)
+        {
+            User.update({userid:profile.id},{$set:newdata},function(err, data) {
+            if (err) {
+              return err;
+            }
+
+            //res.json(data);
+
+          });
+
+        }
+            
         }
         var dbprofile = {
           userid: profile.id,
@@ -189,7 +209,7 @@ app.get('/', function(req, res){
 app.get('/auth/facebook',
   passport.authenticate('facebook',
   {scope:['user_friends','email','user_photos','user_location','user_likes','user_birthday',
-  'user_education_history','user_work_history','user_about_me','user_hometown']}),
+  'user_education_history','user_work_history','user_about_me','user_hometown','user_posts']}),
   function(req, res){
     // The request will be redirected to Facebook for authentication, so this
     // function will not be called.
