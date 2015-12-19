@@ -215,14 +215,16 @@ module.exports = function(app) {
               continue;
             } else {
 
-              var score = getScore(data, myData);
-              data.set('score', score);
+              var ret = getScore(data, myData);
+              data.set('score', ret.value1);
+              data.set('info', ret.value2);
               result.push(data);
               }
           } else {
-            var score = getScore(data, myData);
-            data.set('score', score);
-            result.push(data);
+              var ret = getScore(data, myData);
+              data.set('score', ret.value1);
+              data.set('info', ret.value2);
+              result.push(data);
           }
         }// end if the user id is not my id
 
