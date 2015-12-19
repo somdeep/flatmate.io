@@ -21,6 +21,15 @@ button.facebook:hover, button.facebook:focus, button.facebook:active{
   color: white;
 }
 
+button.linkedin{
+  border-color: #0077b5;
+  color: #0077b5;
+}
+button.linkedin:hover, button.linkedin:focus, button.linkedin:active{
+  background-color: #0077b5;
+  color: white;
+}
+
 textarea{
   width: 100%;
   resize: none;

@@ -5,62 +5,47 @@
   </div>
   <div class="col-md-6 mid">
 
-    <h3>About</h3><form method="get" action="/connect/linkedin">
-    <button type="submit" class="btn btn-linkedin btn-primary">Sync with LinkedIn</button>
+    <h3>About</h3>
+    <form name="editProfile" ng-submit="profileCtrl.editProfile()" novalidate>
+
+
+      <p>Location</p>
+      <input type="text" ng-model="profileCtrl.profile.location"
+             placeholder="City, ST" required></input>
+      <p>Price Range</p>
+      <input type="number" ng-model="profileCtrl.profile.priceLow"
+             placeholder="500" required></input>
+      to
+      <input type="number" ng-model="profileCtrl.profile.priceHigh"
+             placeholder="1000" required></input>
+      <textarea ng-model="profileCtrl.profile.about"
+                placeholder="Tell us about yourself.." required></textarea>
+
+      <h3>Looking For</h3>
+      <textarea ng-model="profileCtrl.profile.lookingFor"
+                placeholder="What are you looking for.." required></textarea>
+
+
+      <div ng-repeat="option in profileCtrl.lookingForOptions">
+        <input type="checkbox"
+               id="lf-{{option}}"
+               name="lf"
+               value="{{option}}"
+               ng-checked="profileCtrl.profile.lookingForList.indexOf(option) > -1"
+               ng-click="profileCtrl.toggleSelection(option)">
+         </input>
+        <label for="lf-{{option}}"
+               >{{option}}</label>
+      </div>
+
+      <button id="editSubmit" type="submit">Save Changes</button>
+
     </form>
-  <form name="editProfile" ng-submit="profileCtrl.editProfile()" novalidate>
 
+    <form method="get" action="/connect/linkedin">
+      <button type="submit" class="linkedin">Sync with LinkedIn</button>
+    </form>
 
-    <p>Location</p>
-    <input type="text" ng-model="profileCtrl.profile.location"
-           placeholder="City, ST" required></input>
-    <p>Price Range</p>
-    <input type="number" ng-model="profileCtrl.profile.priceLow"
-           placeholder="500" required></input>
-    to
-    <input type="number" ng-model="profileCtrl.profile.priceHigh"
-           placeholder="1000" required></input>
-    <textarea ng-model="profileCtrl.profile.about"
-              placeholder="Tell us about yourself.." required></textarea>
-
-    <h3>Looking For</h3>
-    <textarea ng-model="profileCtrl.profile.lookingFor"
-              placeholder="What are you looking for.." required></textarea>
-
-
-    <div ng-repeat="option in profileCtrl.lookingForOptions">
-      <input type="checkbox"
-             id="lf-{{option}}"
-             name="lf"
-             value="{{option}}"
-             ng-checked="profileCtrl.profile.lookingForList.indexOf(option) > -1"
-             ng-click="profileCtrl.toggleSelection(option)">
-       </input>
-      <label for="lf-{{option}}"
-             >{{option}}</label>
-    </div>
-
-    <!-- <div class="row">
-    <div class="col-md-6">
-      <input type="checkbox" id="lf-males" name="lf-males"></input>
-      <label for="lf-males">Male Roomates</label>
-
-      <input type="checkbox" id="lf-females" name="lf-females"></input>
-      <label for="lf-females">Female Roomates</label>
-    </div>
-
-    <div class="col-md-6">
-      <input type="checkbox" id="lf-student" name="lf-student"></input>
-      <label for="lf-student">Students</label>
-
-      <input type="checkbox" id="lf-professional" name="lf-professional"></input>
-      <label for="lf-professional">Professionals</label>
-    </div>
-    </div> -->
-
-    <button id="editSubmit" type="submit">Save Changes</button>
-
-  </form>
   </div>
 
 </div>
