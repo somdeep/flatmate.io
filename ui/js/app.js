@@ -45,9 +45,9 @@
     // };
     this.profile.lookingForList = [];
 
-    $http.get('/user/userid')
+    $http.get('/user')
     .success(function(data, status, headers, config){
-      that.profile = data[0];
+      that.profile = data;
       if(that.profile.lookingForList == null){
         that.profile.lookingForList = [];
       }
@@ -70,10 +70,9 @@
 
     this.editProfile = function(){
 
-      var path = '/user/userid/' + that.profile.userid;
       $('#editSubmit').prop("disabled",true);
       $('#editSubmit').text('Working..');
-      $http.put(path, that.profile)
+      $http.put('/user', that.profile)
       .success(function(data, status, headers, config){
         $('#editSubmit').prop("disabled",false);
         $('#editSubmit').text('Save Changes');
