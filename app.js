@@ -49,9 +49,13 @@ passport.use(new FacebookStrategy({
           userid: profile.id,
           username: profile.displayName,
           name: profile.displayName,
-          email: profile.emails[0].value,
-          gender: profile.gender
+          facebook: {}
         };
+
+        // dump ALL the facebook stuff into this facebook key
+        for(var key in profile){
+          userData.facebook[key] = profile[key];
+        }
 
         if(data.length == 0){
 
@@ -64,7 +68,12 @@ passport.use(new FacebookStrategy({
         }
         else{
 
-          return done(null, session);
+          User.update({userid:profile.id}, {$set : userData}, function(err, data){
+            if(err) return err;
+
+            return done(null, session);
+          });
+
         }
 
       });

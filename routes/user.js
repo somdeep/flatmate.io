@@ -26,5 +26,20 @@ module.exports = function(app){
 
   });
 
+  app.get('/user/:id', function(req, res){
+
+    User.find({userid: req.params.id}, function(err, data){
+
+      if(data.length == 0){
+        res.json({});
+      }
+
+      else{
+        res.json(data[0]);
+      }
+    });
+
+  });
+
 
 };

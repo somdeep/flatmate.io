@@ -222,9 +222,9 @@
 
     var that = this;
 
-    $http.get('/user/userid/' + that.id)
+    $http.get('/user/' + that.id)
     .success(function(data, status, headers, config){
-      that.profile = data[0];
+      that.profile = data
     });
 
     that.sendMessage = function(){
