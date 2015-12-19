@@ -4,6 +4,7 @@ var Message = require('./../models/Message');
 var craigslist = require('./craigslist');
 var request = require('request');
 var request=require('request');
+var getScore=require('./score.js');
 
 module.exports = function(app) {
 
@@ -117,200 +118,128 @@ module.exports = function(app) {
 
     // my profile data from database, ready to be compared to my friends' information
     var myData = [];
+    // all user's profile data from database
+    var data = [];
+    var school = [];
     User.find({userid:id},function(err, myData){
 
       if (err){
         return err;
       }
 
-      // console.log(myData);
+      User.find({}, function (err, user){
+        if (err){
+          return err;
+        }
 
-      // search for my friends list
-      User.findOne({userid:id},function(error,dat){
-      //var prof=JSON.stringify(dat[0].friends);
-      var str= JSON.parse(JSON.stringify(dat), function(k, v) {
-        //console.log(v); // log the current property name, the last is "".
-        return v;       // return the unchanged property value.
-      });
+        for (index=0; index<user.length; index++) {
+          data = [];
+          data = user[index];
 
-      var friend=(str["friends"]);
-      var list=JSON.stringify(friend.data);
-      var data=JSON.parse(list);
-      var pending=0;
+          // if the user id is not my id
+          if (data.toJSON().userid != id)
+          {
 
+            // console.log(data.toJSON().gender);
+            // console.log(myData[0].toJSON().lookingForList[0]);
 
-      for(key in data)
-      {
-      console.log("MATCHED FRIENDS : " + JSON.stringify(data[key].id));
-
-      pending++;
-      }
-      console.log("COUNT : " + pending);
-
-
-      //  var i;
-
-      // for each of my friend
-      for(i=0;i<pending;i++)
-      {
-      console.log((data[i].id));
-
-      User.find({userid:data[i].id},function(err, data){
-
-          if (err){
-            return err;
-          }
-            if(data.length!=0)
-            {
-
-// =================Begin of self-defined matching algorithm==================
-              // score of matching
-              var score = 0;
-
-              // 1. price: if two people have overlap in price range
-              if(myData[0].toJSON().priceLow != null
-                && myData[0].toJSON().priceHigh != null
-                && data[0].toJSON().priceLow != null
-                && data[0].toJSON().priceHigh != null)
-              {
-                if(myData[0].toJSON().priceLow < data[0].toJSON().priceHigh &&
-                   myData[0].toJSON().priceHigh > data[0].toJSON().priceLow)
-                {
-                  score += 50;
-                }
+          // if the user is the right gender I look for
+          // if the user is the right professional type I look for
+          if (myData[0].toJSON().lookingForList != null) {
+            var list = myData[0].toJSON().lookingForList;
+            // set female, male, student, professional == 0
+            var male = 0;
+            var female = 0;
+            var student = 0;
+            var professional = 0;
+            for (p=0; p<list.length; p++) {
+              if (list[p] != null && list[p] == "Males") {
+                male = 1;
               }
-
-              // 2. currentCity
-              if(myData[0].toJSON().currentCity != null
-                && data[0].toJSON().currentCity != null)
-              {
-                var myWords = [];
-                myWords = myData[0].toJSON().currentCity
-                          .toLowerCase()
-                          .split(",");
-                var friendWords = [];
-                friendWords = data[0].toJSON().currentCity
-                          .toLowerCase()
-                          .split(",");
-                // if they live in the same current city
-                if (myWords[0] == friendWords[0]) {
-                  score += 10;
-                }
+              if (list[p] != null && list[p] == "Females") {
+                female = 1;
               }
-
-              // 3. hometown
-              if(myData[0].toJSON().hometown != null
-                && data[0].toJSON().hometown != null)
-              {
-                myWords = [];
-                myWords = myData[0].toJSON().hometown
-                          .toLowerCase()
-                          .split(",");
-                friendWords = [];
-                friendWords = data[0].toJSON().hometown
-                          .toLowerCase()
-                          .split(",");
-                // if they live in the same current city
-                if (myWords[0] == friendWords[0]) {
-                  score += 10;
-                }
+              if (list[p] != null && list[p] == "Students") {
+                student = 1;
               }
-
-              // 4. birthday
-              if(myData[0].toJSON().birthday != null
-                && data[0].toJSON().birthday != null)
-              {
-                var myBirthDate = [];
-                myBirthDate = myData[0].toJSON().birthday
-                          .toLowerCase()
-                          .split("/");
-                var birthDate = [];
-                birthDate = data[0].toJSON().birthday
-                          .toLowerCase()
-                          .split("/");
-                // if their  age difference is less than 5 years old
-                if (Math.abs(myBirthDate[2] - birthDate[2]) <= 5) {
-                  score += 10;
-                }
-              }
-
-              // 5. education
-              if(myData[0].toJSON().education != null
-                && data[0].toJSON().education != null)
-              {
-                // if they are ever in the same school
-                for (i = 0; i < myData[0].toJSON().education.length; i++) {
-                  for (j = 0; j < data[0].toJSON().education.length; j++) {
-                    if (myData[0].toJSON().education[i].school.id == data[0].toJSON().education[j].school.id) {
-                      score += 10;
-                    }
-                  }
-                }
-
-              }
-
-              // 6. work
-              if(myData[0].toJSON().work != null
-                && data[0].toJSON().work != null)
-              {
-                // if they are ever in the same company
-                for (i = 0; i < myData[0].toJSON().work.length; i++) {
-                  for (j = 0; j < data[0].toJSON().work.length; j++) {
-                    if (myData[0].toJSON().work[i].employer.id == data[0].toJSON().work[j].employer.id) {
-                      score += 10;
-                    }
-                  }
-                }
-
-              }
-
-              // 7. likes
-              if(myData[0].toJSON().likes != null
-                && data[0].toJSON().likes != null)
-              {
-                // if they have the same like
-                for (i = 0; i < myData[0].toJSON().likes.data.length; i++) {
-                  for (j = 0; j < data[0].toJSON().likes.data.length; j++) {
-                    if (myData[0].toJSON().likes.data[i].id == data[0].toJSON().likes.data[j].id) {
-                      score += 10;
-                    }
-                  }
-                }
-
-              }
-
-// =================End of self-defined matching algorithm==================
-
-              data[0].set('score', score);
-              //console.log("QUERY RESULT match : " + data);
-              result.push(data[0]);
-              pending--;
-              if(pending == 0){
-                console.log("outprint!!!");
-                console.log(result);
-                console.log("end!!!");
-                res.json(result);
+              if (list[p] != null && list[p] == "Professionals") {
+                professional = 1;
               }
             }
 
-        });
-      }
-      }); // Show the HTML for the Google homepage.
+            // gender filter
+            var isGender = 1;
+            var gender = [];
+            if (data.toJSON().gender) {
+              gender = data.toJSON().gender;
+              if ((gender == "female" && male) || (gender == "male" && female)) {
+                isGender = 0;
+              }
+              if ((male && female) || (!male && !female)) {
+                isGender = 1;
+              }
+            }
 
+            // profession filter
+            var isProfession = 1;
+            var profession = [];
+            var isStudent = 0;
+            var isProfessional = 0;
+            if (data.toJSON().linkedin && data.toJSON().linkedin._json.headline) {
 
+              profession = data.toJSON().linkedin._json.headline;
+              profession = profession.toLowerCase().split(" ");
 
+              for (word = 0; word < profession.length; word++) {
+                if (profession[word] == "student") {
+                  isStudent = 1;
+                }
+              }
+              isProfessional = (isStudent) ? 0 : 1;
 
+              if ((isProfessional && student) || (isStudent && professional)) {
+                isProfession = 0;
+              }
+              if ((student && professional) || (!student && !professional)) {
+                isProfession = 1;
+              }
+            }
+            // console.log(data.toJSON().name);
+            // console.log(isProfession);
+            // console.log(isProfessional);
+            // console.log(isStudent);
+            // console.log(professional);
+            // console.log(student);
 
+            if (!isGender || !isProfession) {
+              continue;
+            } else {
+
+              var score = getScore(data, myData);
+              data.set('score', score);
+              result.push(data);
+              }
+          } else {
+            var score = getScore(data, myData);
+            data.set('score', score);
+            result.push(data);
+          }
+        }// end if the user id is not my id
+
+       }
+       console.log("outprint!!!");
+       console.log(result);
+       console.log("end!!!");
+       res.json(result);
+
+      });
+
+      // console.log("myData");
+      // console.log(myData[0]);
     });
-    //console.log(myData);
-
-
-
-
-
-
 
   });
+
 
   app.get('/user/userid', function(req, res){
     // console.log(req.session.passport.user);
