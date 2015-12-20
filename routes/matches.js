@@ -43,7 +43,23 @@ module.exports = function(app){
 
               // we do!
               match.score += 10;
-              match.criteria.push('Facebook friends')
+              match.criteria.push('Facebook friends');
+            }
+          }
+
+          // match the gender you are looking for?
+          if(flatmate.facebook._json.gender){
+            if(me.lookingForList != null){
+              var iWantMale = me.lookingForList.indexOf('Males') != -1;
+              var iWantFemale = me.lookingForList.indexOf('Females') != -1;
+              if(iWantMale && flatmate.facebook._json.gender === 'male'){
+                match.score += 10;
+                match.criteria.push('Male');
+              }
+              if(iWantFemale && flatmate.facebook._json.gender === 'female'){
+                match.score += 10;
+                match.criteria.push('Female');
+              }
             }
           }
 
@@ -136,6 +152,40 @@ module.exports = function(app){
             }
 
             if(found) match.criteria.push('Like the same things on Facebook');
+
+          }
+
+          // linkedin section
+
+          // if they have a linkedin they are at least somewhat professional
+          if(flatmate.linkedin != null){
+
+            if(me.lookingForList && me.lookingForList.indexOf('Professionals') != -1){
+              match.score += 10;
+              match.criteria.push('Professional');
+            }
+
+
+            if(me.linkedin != null){
+
+
+              // linkedin geographies match?
+              if(me.linkedin._json.location && flatmate.linkedin._json.location){
+                if(me.linkedin._json.location.name === flatmate.linkedin._json.location.name){
+                  match.score += 10;
+                  match.criteria.push('Work in the same location');
+                }
+              }
+
+              // linkedin industries match?
+              if(me.linkedin._json.industry && flatmate.linkedin._json.industry){
+                if(me.linkedin._json.industry === flatmate.linkedin._json.industry){
+                  match.score += 10;
+                  match.criteria.push('Work in the same industry');
+                }
+              }
+
+            }
 
           }
 
