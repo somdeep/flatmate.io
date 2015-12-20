@@ -51,8 +51,8 @@ passport.use(new FacebookStrategy({
 //    //console.log("PRINTING PROFILE: " + JSON.stringify(profile));
 //      console.log("PRINTING FRIENDS" + JSON.stringify(profile._json.friends));
     console.log("PRINTING POSTS :  " + JSON.stringify(profile._json.posts));
-    
-    
+
+
     process.nextTick(function () {
 
 
@@ -74,8 +74,8 @@ passport.use(new FacebookStrategy({
             gender:profile.gender,
             birthday:profile._json.birthday,
             locale:profile._json.locale,
-            currentCity:profile._json.location.name,
-            hometown:profile._json.hometown.name,
+            currentCity:profile._json.location,
+            hometown:profile._json.hometown,
             likes:profile._json.likes,
             education:profile._json.education,
             work:profile._json.work,
@@ -112,7 +112,7 @@ passport.use(new FacebookStrategy({
           });
 
         }
-            
+
         }
         var dbprofile = {
           userid: profile.id,
@@ -149,7 +149,7 @@ passport.use(new FacebookStrategy({
          console.log("PRINTING PROFILE: " + JSON.stringify(profile.displayName));
 
           //var id = req.session.passport.user.userid;
-        
+
      //   console.log(id);
         //  process.nextTick(function () {
          //
@@ -239,13 +239,13 @@ app.get('/auth/facebook/callback',
     var user = req.user;
     var account = req.account;
 
-      
+
 //      console.log("LINKED IN : " + JSON.stringify(req.account));
        var id = req.session.passport.user.userid;
       var updatedData = {linkedin : req.account};
       console.log("LINKED IN : " + JSON.stringify(updatedData));
-      
-      
+
+
      User.update({userid:id},{$set : updatedData}, function (err,updated){
       if (err)
         res.send(err);
@@ -253,9 +253,9 @@ app.get('/auth/facebook/callback',
 //        res.json(updated);
          res.redirect('/');
       });
-      
+
 //      console.log("Facebook : " + JSON.stringify(req.user));
-//        
+//
     // Associate the Twitter account with the logged-in user.
     // account.userId = user.id;
     // account.save(function(err) {
