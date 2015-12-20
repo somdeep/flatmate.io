@@ -22,14 +22,16 @@ var getScore = function(data, myData){
 
   // 2. currentCity
   if(myData[0].toJSON().currentCity != null
-    && data.toJSON().currentCity != null)
+    && myData[0].toJSON().currentCity.name != null
+    && data.toJSON().currentCity != null
+    && data.toJSON().currentCity.name != null)
   {
     var myWords = [];
-    myWords = myData[0].toJSON().currentCity
+    myWords = myData[0].toJSON().currentCity.name
               .toLowerCase()
               .split(",");
     var friendWords = [];
-    friendWords = data.toJSON().currentCity
+    friendWords = data.toJSON().currentCity.name
               .toLowerCase()
               .split(",");
     // if they live in the same current city
@@ -40,14 +42,16 @@ var getScore = function(data, myData){
 
   // 3. hometown
   if(myData[0].toJSON().hometown != null
-    && data.toJSON().hometown != null)
+    && myData[0].toJSON().hometown.name != null
+    && data.toJSON().hometown != null
+    && data.toJSON().hometown.name != null)
   {
     myWords = [];
-    myWords = myData[0].toJSON().hometown
+    myWords = myData[0].toJSON().hometown.name
               .toLowerCase()
               .split(",");
     friendWords = [];
-    friendWords = data.toJSON().hometown
+    friendWords = data.toJSON().hometown.name
               .toLowerCase()
               .split(",");
     // if they live in the same current city
