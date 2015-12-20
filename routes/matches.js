@@ -42,19 +42,103 @@ module.exports = function(app){
             if(friends[j].id === flatmate.userid){
 
               // we do!
-              match.score += 20;
+              match.score += 10;
               match.criteria.push('Facebook friends')
             }
+          }
+
+          // same location?
+          if(me.location != null && flatmate.location != null){
+
+            if(me.location.split(',')[1].toUpperCase() == flatmate.location.split(',')[1].toUpperCase()){
+
+              if(me.location.split(',')[0].toUpperCase() === flatmate.location.split(',')[0].toUpperCase()){
+                match.score += 10;
+                match.criteria.push('Live in the same city');
+              }
+              else{
+                match.score += 5;
+                match.criteria.push('Live in the same state');
+              }
+            }
+
           }
 
           // do we agree on price?
           if((flatmate.priceLow <= me.priceHigh && flatmate.priceLow >= me.priceLow) ||
               flatmate.priceHigh <= me.priceHigh && flatmate.priceHigh >= me.priceLow){
 
-            match.score += 20;
+            match.score += 10;
             match.criteria.push('Agree on price range');
+          }
+
+          // close to same age?
+          if(Math.abs(
+              flatmate.facebook._json.birthday.slice(-4) -
+              me.facebook._json.birthday.slice(-4)) <= 3){
+
+            match.score += 10;
+            match.criteria.push('Close to same age');
 
           }
+
+          // same school?
+          if(flatmate.facebook._json.education != null && me.facebook._json.education != null){
+
+            var found = false;
+            for(var j=0; j<me.facebook._json.education.length; j++){
+              var mySchool = me.facebook._json.education[j].school;
+              for(var k=0; k<flatmate.facebook._json.education.length; k++){
+                var theirSchool = flatmate.facebook._json.education[k].school;
+                if(mySchool.name.toUpperCase() === theirSchool.name.toUpperCase()){
+                  match.score += 10;
+                  found = true;
+                }
+              }
+            }
+
+            if(found) match.criteria.push('Went to the same school');
+
+          }
+
+          // same work?
+          if(flatmate.facebook._json.work != null && me.facebook._json.work != null){
+
+            var found = false;
+            for(var j=0; j<me.facebook._json.work.length; j++){
+              var myWork = me.facebook._json.work[j].employer;
+              for(var k=0; k<flatmate.facebook._json.work.length; k++){
+                var theirWork = flatmate.facebook._json.work[k].employer;
+                if(myWork.name.toUpperCase() === theirWork.name.toUpperCase()){
+                  match.score += 10;
+                  found = true;
+                }
+              }
+            }
+
+            if(found) match.criteria.push('Worked for the same company');
+
+          }
+
+          // similar likes?
+          if(flatmate.facebook._json.likes != null && me.facebook._json.likes != null){
+
+            var found = false;
+            for(var j=0; j<me.facebook._json.likes.data.length; j++){
+              var myLike = me.facebook._json.likes.data[j].name;
+              for(var k=0; k<flatmate.facebook._json.likes.data.length; k++){
+                var theirLike = flatmate.facebook._json.likes.data[k].name;
+                if(myLike.toUpperCase() === theirLike.toUpperCase()){
+                  match.score += 1;
+                  found = true;
+                }
+              }
+            }
+
+            if(found) match.criteria.push('Like the same things on Facebook');
+
+          }
+
 
           matches.push(match);
 
