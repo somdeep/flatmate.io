@@ -9,7 +9,7 @@ var express = require('express'),
 
     fs = require('fs');
     var mongoose    = require('mongoose');
-    var dbUrl       = "mongodb://flatmate:flatmate@ds061974.mongolab.com:61974/flatmate";
+    var dbUrl       = "mongodb://flatemate:flatemate@ds033915.mongolab.com:33915/flatemateio";
     //var dbUrl = "mongodb://localhost:27017/flatmate1";
 
     var db          = mongoose.connect(dbUrl);
@@ -149,7 +149,7 @@ passport.use(new FacebookStrategy({
          console.log("PRINTING PROFILE: " + JSON.stringify(profile.displayName));
 
           //var id = req.session.passport.user.userid;
-        
+
      //   console.log(id);
         //  process.nextTick(function () {
          //
@@ -239,13 +239,13 @@ app.get('/auth/facebook/callback',
     var user = req.user;
     var account = req.account;
 
-      
+
 //      console.log("LINKED IN : " + JSON.stringify(req.account));
        var id = req.session.passport.user.userid;
       var updatedData = {linkedin : req.account};
       console.log("LINKED IN : " + JSON.stringify(updatedData));
-      
-      
+
+
      User.update({userid:id},{$set : updatedData}, function (err,updated){
       if (err)
         res.send(err);
@@ -253,9 +253,9 @@ app.get('/auth/facebook/callback',
 //        res.json(updated);
          res.redirect('/');
       });
-      
+
 //      console.log("Facebook : " + JSON.stringify(req.user));
-//        
+//
     // Associate the Twitter account with the logged-in user.
     // account.userId = user.id;
     // account.save(function(err) {

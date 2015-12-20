@@ -45,9 +45,9 @@
     // };
     this.profile.lookingForList = [];
 
-    $http.get('/user/userid')
+    $http.get('/user')
     .success(function(data, status, headers, config){
-      that.profile = data[0];
+      that.profile = data;
       if(that.profile.lookingForList == null){
         that.profile.lookingForList = [];
       }
@@ -70,10 +70,9 @@
 
     this.editProfile = function(){
 
-      var path = '/user/userid/' + that.profile.userid;
       $('#editSubmit').prop("disabled",true);
       $('#editSubmit').text('Working..');
-      $http.put(path, that.profile)
+      $http.put('/user', that.profile)
       .success(function(data, status, headers, config){
         $('#editSubmit').prop("disabled",false);
         $('#editSubmit').text('Save Changes');
@@ -90,7 +89,7 @@
 
     var that = this;
 
-    $http.get('/user/matches')
+    $http.get('/matches')
     .success(function(data, status, headers, config){
       that.matches = data;
     });
@@ -115,36 +114,10 @@
 
 
     var that = this;
-    $http.get('/message')
+    $http.get('/messages')
     .success(function(data, status, headers, config){
-      // that.inbox = data.in;
-      // //sort inbox: latest first
-      // that.inbox.sort(function(a,b){
-      //   var d_a = new Date(a.time);
-      //   var d_b = new Date(b.time);
-      //   if (d_a < d_b){
-      //     return 1;
-      //   } else if (d_a > d_b) {
-      //     return -1;
-      //   } else {
-      //     return 0;
-      //   }
-      // });
-      // that.outbox = data.out;
-      // //sort outbox: latest first
-      // that.outbox.sort(function(a,b){
-      //   var d_a = new Date(a.time);
-      //   var d_b = new Date(b.time);
-      //   if (d_a < d_b){
-      //     return 1;
-      //   } else if (d_a > d_b) {
-      //     return -1;
-      //   } else {
-      //     return 0;
-      //   }
-      // });
-      // that.new.from = data.userid;
-      that.myId = data.userid;
+
+      that.myId = data.myId;
 
       var userSet = {};
       for(var i=0; i<data.in.length; i++){
@@ -161,23 +134,6 @@
       that.activeUser = 0;
     });
 
-    // //go to that user's profile on click
-    // this.clicked = function(userid){
-    //   console.log(userid);
-    //   $location.url('/users/' + userid);
-    // }
-    //
-    // this.deleteMsg = function(msgid){
-    //   $http.delete('/message/msgid/'+msgid);
-    // }
-    //
-    // this.sendMsg = function(){
-    //   $http.post('/message',that.new);
-    //   console.log(this.new.from);
-    //   console.log(this.new.to);
-    //   console.log(this.new.text);
-    // }
-
     this.userClick = function(index){
       that.activeUser = index;
     }
@@ -193,10 +149,9 @@
     this.sendMessage = function(){
       var body = {
         to : that.users[that.activeUser].id,
-        from : that.myId,
         text : that.message
       }
-      $http.post('/message', body);
+      $http.post('/messages', body);
       that.messages.push(body);
       that.message = '';
       $scope.sendMessage.$setPristine();
@@ -210,22 +165,14 @@
     this.id = $routeParams.id;
 
     this.profile = {}
-    //   username : 'Steven',
-    //   location : 'Newark, NJ',
-    //   priceLow : 0,
-    //   priceHigh : 1800,
-    //   about : "I'm a professor in the Computer Science department at Columbia University. I joined the faculty here after many years at AT&T  Labs Research in Florham Park, New Jersey. I do research on networks, security and why the two don't get along.",
-    //   lookingFor : 'You should be able to pay rent',
-    //   lookingForList : ['Males', 'Females', 'Professionals']
-    // };
 
     this.message = '';
 
     var that = this;
 
-    $http.get('/user/userid/' + that.id)
+    $http.get('/user/' + that.id)
     .success(function(data, status, headers, config){
-      that.profile = data[0];
+      that.profile = data
     });
 
     that.sendMessage = function(){
@@ -233,7 +180,7 @@
         text: that.message,
         to: that.id
       };
-      $http.post('/message', body)
+      $http.post('/messages', body)
       .success(function(data, status, headers, config){
         $('#myModal').modal('hide');
       })
