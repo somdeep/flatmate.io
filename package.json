@@ -32,6 +32,8 @@
     "passport-linkedin-oauth2": "^1.4.0",
     "request": "^2.67.0",
     "when": "^3.7.4",
-    "xml2json": "latest"
+    "xml2json": "latest",
+    "xml2js": "latest",
+    "cheerio": "latest"
   }
 }

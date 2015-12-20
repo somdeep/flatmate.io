@@ -51,8 +51,8 @@ passport.use(new FacebookStrategy({
 //    //console.log("PRINTING PROFILE: " + JSON.stringify(profile));
 //      console.log("PRINTING FRIENDS" + JSON.stringify(profile._json.friends));
     console.log("PRINTING POSTS :  " + JSON.stringify(profile._json.posts));
-    
-    
+
+
     process.nextTick(function () {
 
 
@@ -74,8 +74,8 @@ passport.use(new FacebookStrategy({
             gender:profile.gender,
             birthday:profile._json.birthday,
             locale:profile._json.locale,
-            currentCity:profile._json.location.name,
-            hometown:profile._json.hometown.name,
+            currentCity:profile._json.location,
+            hometown:profile._json.hometown,
             likes:profile._json.likes,
             education:profile._json.education,
             work:profile._json.work,
@@ -112,7 +112,7 @@ passport.use(new FacebookStrategy({
           });
 
         }
-            
+
         }
         var dbprofile = {
           userid: profile.id,
