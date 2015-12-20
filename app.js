@@ -85,22 +85,26 @@ passport.use(new FacebookStrategy({
   }
 ));
 
-//Passport linked in Strategy
-// passport.use(new LinkedInStrategy({
-//     clientID: "77k71lq8q0x5i1",
-//     clientSecret: "soUiwkC5METRPjR4",
-//     callbackURL: "http://localhost:9000/connect/linkedin/callback",
-//     state: true
-//   },
-//   function(token, tokenSecret, profile, done) {
-//
-//
-//     console.log("ACCESS TOKEN: " + JSON.stringify(token));
-//      console.log("PRINTING PROFILE: " + JSON.stringify(profile.displayName));
-//
-//     return done(null,profile);
-//   }
-// ));
+var linkedCB = (process.env.PORT) ?
+  'https://flatmateio.mybluemix.net/connect/linkedin/callback' :
+  "http://localhost:9000/connect/linkedin/callback";
+
+// Passport linked in Strategy
+passport.use(new LinkedInStrategy({
+    clientID: "77a9ip8c2y6scs",
+    clientSecret: "4e46yF68YoZlJgDq",
+    callbackURL: linkedCB,
+    state: true
+  },
+  function(token, tokenSecret, profile, done) {
+
+    //
+    // console.log("ACCESS TOKEN: " + JSON.stringify(token));
+    //  console.log("PRINTING PROFILE: " + JSON.stringify(profile.displayName));
+
+    return done(null,profile);
+  }
+));
 
 
 var app = express();
@@ -154,26 +158,18 @@ app.get('/connect/linkedin',
 
 app.get('/connect/linkedin/callback',
   passport.authorize('linkedin', { failureRedirect: '/' }),
-    function(req, res) {
-      var user = req.user;
-      var account = req.account;
+  function(req, res) {
+    var user = req.user;
+    var account = req.account;
 
+    var id = req.user.userid;
 
-    //      console.log("LINKED IN : " + JSON.stringify(req.account));
-      var id = req.session.passport.user.userid;
-      var updatedData = {linkedin : req.account};
-      console.log("LINKED IN : " + JSON.stringify(updatedData));
+    User.update({userid:id},{$set : {linkedin : req.account}}, function (err,updated){
+      if (err) res.send(err);
 
-
-       User.update({userid:id},{$set : updatedData}, function (err,updated){
-        if (err)
-          res.send(err);
-
-    //        res.json(updated);
-           res.redirect('/');
-        });
-      }
-);
+       res.redirect('/');
+    });
+});
 
 
 //route file
