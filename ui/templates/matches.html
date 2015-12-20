@@ -1,14 +1,14 @@
 <div class="row matches">
   <div class="col-md-6"
-       ng-repeat="match in matchCtrl.matches | orderBy:'-score'| limitTo:10"
+       ng-repeat="match in matchCtrl.matches | orderBy:'-score'"
        ng-click="matchCtrl.matchClicked(match.userid)">
     <div class="match">
       <img ng-src="http://graph.facebook.com/{{match.userid}}/picture?type=large">
       <div class="contents">
         <h3>{{match.username}}</h3>
         <p class="location">{{match.location}}</p>
-        <p>Matching score:{{match.score}}</p>
-        <p>{{match.info}}</p>        
+        <p>FlatScore <b>{{match.score}}</b></p>
+        <p ng-repeat="criteria in match.criteria">{{criteria}}</p>
         <!-- <p>You have common friends</p>
         <p>match criteria</p>
         <p>match criteria</p>

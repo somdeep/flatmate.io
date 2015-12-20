@@ -26,7 +26,7 @@ passport.deserializeUser(function(obj, done) {
 });
 
 var cbUrl = (process.env.PORT) ?
-    'https://flatmateio.mybluemix.net/auth/facebook/callback',
+    'https://flatmateio.mybluemix.net/auth/facebook/callback' :
     "http://localhost:9000/auth/facebook/callback"
 
 passport.use(new FacebookStrategy({
@@ -182,6 +182,7 @@ app.use(ensureAuthenticated);
 // require('./app/routes/routes.js')(app);
 
 require('./routes/user.js')(app);
+require('./routes/matches.js')(app);
 
 app.get('/logout', function(req, res){
   req.logout();

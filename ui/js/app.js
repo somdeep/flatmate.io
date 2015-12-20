@@ -89,7 +89,7 @@
 
     var that = this;
 
-    $http.get('/user/matches')
+    $http.get('/matches')
     .success(function(data, status, headers, config){
       that.matches = data;
     });
@@ -116,33 +116,7 @@
     var that = this;
     $http.get('/message')
     .success(function(data, status, headers, config){
-      // that.inbox = data.in;
-      // //sort inbox: latest first
-      // that.inbox.sort(function(a,b){
-      //   var d_a = new Date(a.time);
-      //   var d_b = new Date(b.time);
-      //   if (d_a < d_b){
-      //     return 1;
-      //   } else if (d_a > d_b) {
-      //     return -1;
-      //   } else {
-      //     return 0;
-      //   }
-      // });
-      // that.outbox = data.out;
-      // //sort outbox: latest first
-      // that.outbox.sort(function(a,b){
-      //   var d_a = new Date(a.time);
-      //   var d_b = new Date(b.time);
-      //   if (d_a < d_b){
-      //     return 1;
-      //   } else if (d_a > d_b) {
-      //     return -1;
-      //   } else {
-      //     return 0;
-      //   }
-      // });
-      // that.new.from = data.userid;
+
       that.myId = data.userid;
 
       var userSet = {};
@@ -159,23 +133,6 @@
       }
       that.activeUser = 0;
     });
-
-    // //go to that user's profile on click
-    // this.clicked = function(userid){
-    //   console.log(userid);
-    //   $location.url('/users/' + userid);
-    // }
-    //
-    // this.deleteMsg = function(msgid){
-    //   $http.delete('/message/msgid/'+msgid);
-    // }
-    //
-    // this.sendMsg = function(){
-    //   $http.post('/message',that.new);
-    //   console.log(this.new.from);
-    //   console.log(this.new.to);
-    //   console.log(this.new.text);
-    // }
 
     this.userClick = function(index){
       that.activeUser = index;
