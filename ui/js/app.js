@@ -114,10 +114,10 @@
 
 
     var that = this;
-    $http.get('/message')
+    $http.get('/messages')
     .success(function(data, status, headers, config){
 
-      that.myId = data.userid;
+      that.myId = data.myId;
 
       var userSet = {};
       for(var i=0; i<data.in.length; i++){
@@ -149,10 +149,9 @@
     this.sendMessage = function(){
       var body = {
         to : that.users[that.activeUser].id,
-        from : that.myId,
         text : that.message
       }
-      $http.post('/message', body);
+      $http.post('/messages', body);
       that.messages.push(body);
       that.message = '';
       $scope.sendMessage.$setPristine();
@@ -166,14 +165,6 @@
     this.id = $routeParams.id;
 
     this.profile = {}
-    //   username : 'Steven',
-    //   location : 'Newark, NJ',
-    //   priceLow : 0,
-    //   priceHigh : 1800,
-    //   about : "I'm a professor in the Computer Science department at Columbia University. I joined the faculty here after many years at AT&T  Labs Research in Florham Park, New Jersey. I do research on networks, security and why the two don't get along.",
-    //   lookingFor : 'You should be able to pay rent',
-    //   lookingForList : ['Males', 'Females', 'Professionals']
-    // };
 
     this.message = '';
 
@@ -189,7 +180,7 @@
         text: that.message,
         to: that.id
       };
-      $http.post('/message', body)
+      $http.post('/messages', body)
       .success(function(data, status, headers, config){
         $('#myModal').modal('hide');
       })

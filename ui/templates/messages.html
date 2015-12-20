@@ -14,7 +14,7 @@
     </div>
 
     <div class="col-md-8">
-      <div ng-repeat="message in msgCtrl.messages | filter:msgCtrl.users[msgCtrl.activeUser].id | orderBy:'time'"
+      <div ng-repeat="message in msgCtrl.messages | filter:msgCtrl.users[msgCtrl.activeUser].id | orderBy:'timestamp'"
            ng-class="msgCtrl.messageClass(message)"
            class="message">
         {{message.text}}

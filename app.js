@@ -183,6 +183,7 @@ app.use(ensureAuthenticated);
 
 require('./routes/user.js')(app);
 require('./routes/matches.js')(app);
+require('./routes/messages.js')(app);
 
 app.get('/logout', function(req, res){
   req.logout();
