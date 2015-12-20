@@ -8,7 +8,8 @@
         <h3>{{match.username}}</h3>
         <p class="location">{{match.location}}</p>
         <p>FlatScore <b>{{match.score}}</b></p>
-        <p ng-repeat="criteria in match.criteria">{{criteria}}</p>
+        <p ng-repeat="criteria in match.criteria | limitTo:5">{{criteria}}</p>
+        <p ng-show="match.criteria.length > 5">+{{match.criteria.length - 5}} more..</p>
         <!-- <p>You have common friends</p>
         <p>match criteria</p>
         <p>match criteria</p>

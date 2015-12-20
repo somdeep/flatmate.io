@@ -119,6 +119,8 @@ input.ng-dirty.ng-invalid, textarea.ng-dirty.ng-invalid{
   /*transition: background-color .2s linear, color .2s linear;*/
   margin-bottom: 20px;
   border: 2px white solid;
+  height: 200px;
+  overflow: hidden;
 }
 .matches .match:hover{
   border-color: #43BF57;
@@ -128,6 +130,7 @@ input.ng-dirty.ng-invalid, textarea.ng-dirty.ng-invalid{
 .matches .match img{
   width: 30%;
   vertical-align: top;
+  max-height: 100%;
 }
 
 .matches .match .contents{

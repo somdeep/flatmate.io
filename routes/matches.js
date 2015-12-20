@@ -34,7 +34,7 @@ module.exports = function(app){
           }
 
           // everyone on here is a flatmate user
-          match.criteria.push('Flatmate.io user');
+          // match.criteria.push('Flatmate.io user');
 
           // are we friends on facebook?
           friends = me.facebook._json.friends.data;
@@ -66,7 +66,8 @@ module.exports = function(app){
           // same location?
           if(me.location != null && flatmate.location != null){
 
-            if(me.location.split(',')[1].toUpperCase() == flatmate.location.split(',')[1].toUpperCase()){
+            if((me.location.split(',')[1] != null) && (flatmate.location.split(',')[1] != null) &&
+              me.location.split(',')[1].toUpperCase() == flatmate.location.split(',')[1].toUpperCase()){
 
               if(me.location.split(',')[0].toUpperCase() === flatmate.location.split(',')[0].toUpperCase()){
                 match.score += 10;
